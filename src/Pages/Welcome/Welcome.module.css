@@ -1,0 +1,37 @@
+.signinCard{
+    position: relative;
+    z-index: 1;
+    background-color: rgba(245, 244, 255, 0.8);
+    width: 450px;
+    height: 430px;
+    border-radius: 5px;
+    margin: 5% 10%;
+    padding: 50px 100px;
+}
+
+.signinCard > h1{
+    font-size: 3em;
+    font-weight: 300;
+}
+
+.signinCard > p{
+    font-size: 3em;
+    font-weight: 300;
+}
+
+.signinCard > button{
+    font-size: 1.7em;
+    font-weight: 300;
+    width: 290px;
+    height: 70px;
+    color: var(--white);
+    background-color: var(--darkblue);
+    border-radius: 7px;
+    float: right;
+    border: none;
+}
+
+.signinCard > button:hover{
+    opacity: 0.8;
+    cursor: pointer;
+}

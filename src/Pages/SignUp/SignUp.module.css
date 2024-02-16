@@ -1,0 +1,110 @@
+.createAccountMain{
+    background-color: var(--lightblue);
+    height: calc(100vh - 80px);
+    width: 99vw;
+    position: relative;
+    font-family: inherit;
+    overflow-x: hidden;
+}
+
+.createAccountContainer{
+    background-color: var(--white);
+    width: 30%;
+    position: absolute;
+    left: 35%;
+    top: 30px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+}
+
+.createAccountTopSection{
+    width: 80%;
+    margin: 50px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.createAccountTopSection > h1{
+    font-size: 2.5em;
+    font-weight: 300;
+    margin: 20px auto;
+}
+
+.createAccountTopSection > p{
+    color: var(--lightgray);
+}
+
+.creatAccountForm{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin: auto;
+    gap: 15px;
+}
+
+.createAccountContainer > button, .createPassword > button {
+    background-color: var(--darkblue);
+    color: var(--white);
+    border: none;
+    border-radius: 7px;
+    width: 250px;
+    height: 50px;
+    font-size: 1.5em;
+    font-weight: 300;
+    margin: 50px auto;
+    cursor: pointer;
+    
+}
+
+.createAccountContainer > button:hover {
+    opacity: 0.8;
+}
+
+.createPassword{
+    background-color: var(--white);
+    width: 30%;
+    position: absolute;
+    left: 35%;
+    top: 30px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+}
+
+.backButton{
+    position: absolute;
+    top: 50px;
+    left: 50px;
+}
+
+.backButton{
+    cursor: pointer;
+}
+
+.captchaContainer{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    align-items: center;
+    margin: auto;
+    gap: 15px;
+}
+
+.captchaForm{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    margin: auto;
+}
+
+.passwordInfo{
+    text-align: left;
+    color: var(--lightblue);
+}
