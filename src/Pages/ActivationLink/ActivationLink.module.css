@@ -1,4 +1,4 @@
-.createAccountMain{
+.activationMain{
     background-color: var(--lightblue);
     height: calc(100vh - 80px);
     width: 99vw;
@@ -7,7 +7,7 @@
     overflow-x: hidden;
 }
 
-.createAccountContainer{
+.activationContainer{
     background-color: var(--white);
     width: 30%;
     position: absolute;
@@ -19,7 +19,7 @@
     border-radius: 15px;
 }
 
-.createAccountTopSection{
+.activationTopSection{
     width: 80%;
     margin: 50px auto;
     display: flex;
@@ -29,25 +29,49 @@
     text-align: center;
 }
 
-.createAccountTopSection > h1{
+.activationTopSection > span{
+    font-weight: 600;
+}
+
+.activationTopSection > h1{
     font-size: 2.5em;
     font-weight: 300;
     margin: 20px auto;
 }
 
-.createAccountTopSection > p{
+.activationTopSection > p{
     color: var(--lightgray);
+    font-weight: 300;
 }
 
-.creatAccountForm{
+.activationTopSection > span{
+    color: var(--darkgray);
+}
+
+.activationSection{
     display: flex;
     flex-direction: column;
     width: 50%;
     margin: auto;
     gap: 15px;
+    padding: 20px 40px;
+    background-color: #e6e6e6;
+    border-radius: 10px;
 }
 
-.creatAccountForm > button, .createPassword > button {
+.activationSection h2{
+    text-align: center;
+}
+
+.activationContainer > a{
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+.activationButton {
     background-color: var(--darkblue);
     color: var(--white);
     border: none;
@@ -58,53 +82,16 @@
     font-weight: 300;
     margin: 50px auto;
     cursor: pointer;
-    
 }
 
-.creatAccountForm > button:hover {
+.activationButton:hover {
     opacity: 0.8;
 }
 
-.createPassword{
-    background-color: var(--white);
-    width: 30%;
-    position: absolute;
-    left: 35%;
-    top: 30px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    border-radius: 15px;
-}
-
-.backButton{
-    position: absolute;
-    top: 50px;
-    left: 50px;
-}
-
-.backButton{
-    cursor: pointer;
-}
-
-.captchaContainer{
-    display: flex;
-    flex-direction: column;
-    width: 80%;
-    align-items: center;
-    margin: auto;
-    gap: 15px;
-}
-
-.captchaForm{
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
-    margin: auto;
-}
-
-.passwordInfo{
+.activationParagraphs{
     text-align: left;
-    color: var(--lightblue);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    font-weight: 300;
 }

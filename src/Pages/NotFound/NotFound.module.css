@@ -1,0 +1,39 @@
+.notFoundMain{
+    background-color: var(--white);
+}
+
+.notFoundContainer{
+    display: flex;
+    margin-top: 15%;
+    /* background-color: red; */
+    justify-content: center;
+    gap: 40px;
+}
+
+.notFoundSection{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.notFoundSection > h1{
+    font-size: 3em;
+}
+
+.notFoundSection > button{
+        background-color: var(--darkblue);
+        color: var(--white);
+        border: none;
+        border-radius: 7px;
+        width: 250px;
+        height: 50px;
+        font-size: 1.5em;
+        font-weight: 300;
+        margin: 50px auto;
+        cursor: pointer;
+}
+
+.notFoundSection > button:hover{
+    opacity: 0.8;
+}

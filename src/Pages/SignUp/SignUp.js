@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Styles from './SignUp.module.css'
 import Stars from '../../Components/SVG/Stars'
 import { FormControl, IconButton, InputAdornment, InputLabel, MenuItem, Select, TextField } from '@mui/material';
@@ -27,6 +27,17 @@ export default function SignUp() {
         dateOfBirth: null,
         gender: ''
     });
+    
+    useEffect(() => {
+        const unloadCallback = (event) => {
+          event.preventDefault();
+          event.returnValue = "";
+          return "";
+        };
+        
+        window.addEventListener("beforeunload", unloadCallback);
+        return () => window.removeEventListener("beforeunload", unloadCallback);
+      }, []);
 
     const [errorFirstName, setErrorFirstName] = useState(false);
     const [errorLastName, setErrorLastName] = useState(false);
@@ -34,11 +45,6 @@ export default function SignUp() {
     const [errorDateOfBirth, setErrorDateOfBirth] = useState(false);
     const [errorGender, setErrorGender] = useState(false);
     const [errorPassword, setErrorPassword] = useState(false);
-
-    const [passwords, setPasswords] = useState({
-        password: '',
-        confirmPassword: ''
-    });
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -62,11 +68,21 @@ export default function SignUp() {
         }));
     };
 
+
+    const [errorHasNumber, setErrorHasNumber] = useState(false);
+    const [errorhasCapitalLetter, setErrorHasCapitalLetter] = useState(false);
+    const [errorHasCharacter, setErrorHasCharacter] = useState(false);
+    const [errorLength, setErrorLength] = useState(false);
+
     const isValidPassword = (password) => {
         const hasNumber = /\d/.test(password);
+        if(!hasNumber) setErrorHasNumber(true);
         const hasCapitalLetter = /[A-Z]/.test(password);
-        const hasCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+        if(!hasCapitalLetter) setErrorHasCapitalLetter(true);
+        const hasCharacter = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password);
+        if(!hasCharacter) setErrorHasCharacter(true);
         const isLongEnough = password.length >= 6;
+        if(!isLongEnough) setErrorLength(true);
         return hasNumber && hasCapitalLetter && hasCharacter && isLongEnough;
     };
 
@@ -91,6 +107,10 @@ export default function SignUp() {
         setErrorDateOfBirth(false);
         setErrorGender(false);
         setErrorPassword(false);
+        setErrorHasCapitalLetter(false);
+        setErrorHasCharacter(false);
+        setErrorHasNumber(false);
+        setErrorLength(false);
 
         if(isVisible ===1){
             if(
@@ -110,7 +130,7 @@ export default function SignUp() {
                 if(!isValidEmail(formData.email)){
                     setErrorEmail(true)
                 } else if(!isOver13YearsOld(formData.dateOfBirth)) {
-                    setErrorDateOfBirth(true)
+                    setErrorDateOfBirth(true);
                 } else {
                     setPassword("");
                     setConfirmPassword("");
@@ -123,14 +143,17 @@ export default function SignUp() {
             if(password==="" || confirmPassword==="" || !isValidPassword(password)){
                 setErrorPassword(true);
             } else if (password !== confirmPassword){
-                console.log("pass, conf", password, confirmPassword)
                 setErrorPassword(true);
             } else {
+                setCaptcha(generateCaptcha());
                 setIsVisible((prevState) => prevState + 1);
                 setDirection((prevState)=> prevState+1); // Forward animation
             }
 
         } else {
+                //post method here
+                console.log(formData);
+                console.log(password);
                 setIsVisible((prevState) => prevState + 1);
                 setDirection((prevState)=> prevState+1); // Forward animation
         }
@@ -144,14 +167,15 @@ export default function SignUp() {
     const handleSubmit = (e) => {
         e.preventDefault();
         // Perform password validation here
-        if (passwords.password !== passwords.confirmPassword) {
-            alert("Passwords do not match!");
-            return;
-        }
+        // if (passwords.password !== passwords.confirmPassword) {
+        //     alert("Passwords do not match!");
+        //     return;
+        // }
         // Continue with form submission if passwords match
-        console.log("Form Data:", formData);
-        console.log("Passwords:", passwords);
+        // console.log("Form Data:", formData);
+        // console.log("Passwords:", passwords);
         // Add your form submission logic here
+        console.log("in handlesubmit")
     };
 
     const generateCaptcha = () => {
@@ -176,6 +200,9 @@ export default function SignUp() {
       event.preventDefault();
       if (userInput.toLowerCase() === captcha.toLowerCase()) {
         setIsCaptchaValid(2);
+
+        console.log("Form Data:", formData);
+        console.log("Passwords:", password);
       } else {
         setIsCaptchaValid(3);
         setCaptcha(generateCaptcha());
@@ -209,9 +236,10 @@ export default function SignUp() {
                 animate={{ x: 0 }}
                 exit={{ x: '-100%' }}
                 transition={{ duration: 0.5 }}
-                onSubmit={handleSubmit}
+                onSubmit={handleContinue}
                 className={Styles.creatAccountForm}
                 >
+                    {errorDateOfBirth && <p style={{color:"red", textAlign:"center"}}>You must be at least 13 years of age to use our services.</p>}
                     <TextField 
                         id="outlined-basic" 
                         name="firstName" 
@@ -266,8 +294,8 @@ export default function SignUp() {
                         <MenuItem value="unspecified">Prefer Not to Say</MenuItem>
                         </Select>
                     </FormControl>
+                    <button onClick={handleContinue} type='submit'>Continue</button>
                 </form>
-            <button onClick={handleContinue}>Continue</button>
                     </motion.article>
                 )}
 
@@ -287,11 +315,10 @@ export default function SignUp() {
                         <p>Create a strong and unique password now to safeguard your personal information.</p>
                         <p>Passwords should include the following</p>
                         <ul className={Styles.passwordInfo}>
-                            <li>At least one uppercase letter</li>
-                            <li>At least one lowercase letter</li>
-                            <li>At least one number</li>
-                            <li>A character</li>
-                            <li>At least 6 characters in length</li>
+                            <li style={errorhasCapitalLetter ? {color:"#ff0000"} : {}}>At least one uppercase letter</li>
+                            <li style={errorHasNumber ? {color:"#ff0000"} : {}}>At least one number</li>
+                            <li style={errorHasCharacter ? {color:"#ff0000"} : {}}>A character ! @ # $ % ^ & ? ) (</li>
+                            <li style={errorLength ? {color:"#ff0000"} : {}}>At least 6 characters in length</li>
                         </ul>
                     </section>
                         <form
@@ -300,7 +327,7 @@ export default function SignUp() {
                         animate={{ x: 0 }}
                         exit={{ x: '-100%' }}
                         transition={{ duration: 0.5 }}
-                        onSubmit={handleSubmit}
+                        onSubmit={handleContinue}
                         className={Styles.creatAccountForm}
                         >
                             <TextField
@@ -334,8 +361,8 @@ export default function SignUp() {
                             error = {errorPassword ? true : false}
                             onChange={(e)=>setConfirmPassword(e.target.value)}
                             />
+                            <button type="submit" onClick={handleContinue}>Continue</button>                    
                         </form>
-                    <button onClick={handleContinue}>Continue</button>                    
             </motion.article>
                 )}
 
@@ -354,11 +381,12 @@ export default function SignUp() {
                         <Captcha/>
                         <h1>Last step</h1>
                         <p>Please type the characters you see.</p>
+                        {isCaptchaValid===3 && <span style={{color:"red"}}>Captcha is invalid. Please try again.</span>}
                     </section>
                         
                     <div className={Styles.captchaContainer}>
                     <form className={Styles.captchaForm} onSubmit={handleCaptchaSubmit}>
-                        <img height={50} src={`https://dummyimage.com/120x30/000/fff&text=${captcha}`} alt="Captcha" />
+                        <img height={50} draggable="false" src={`https://dummyimage.com/120x30/000/fff&text=${captcha}`} alt="Captcha" />
                         <TextField 
                         error = {isCaptchaValid === 3 ? true : false}
                         id="outlined-basic" 
@@ -366,10 +394,9 @@ export default function SignUp() {
                         variant="outlined" 
                         placeholder='Enter the characters here'
                         onChange={handleChange}
+                        autoComplete="off" 
                          />
                     </form>
-                    {/* {isCaptchaValid===2 && <p>Captcha is valid!</p>} */}
-                    {isCaptchaValid===3 && <p>Captcha is invalid. Please try again.</p>}
                     </div>
 
 
