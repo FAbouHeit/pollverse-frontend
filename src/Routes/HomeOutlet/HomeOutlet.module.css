@@ -1,0 +1,36 @@
+.homeOutletContainer {
+    display: flex;
+    height: 1000px; /* Full height of the viewport */
+    display: flex;
+    position: relative;
+    z-index: 1;
+    /* margin-top: 80px; */
+}
+
+.homeContainer {
+    margin: auto;
+    width: 50%; /* Occupy 50% of the container */
+    background-color: var(--whisper); /* Just for visualization */
+    margin-top: 80px;
+    z-index: 10;
+    height: 1000px;
+}
+
+.leftAside,
+.rightAside {
+    width: 25%; /* 25% width for each aside */
+    position: fixed; /* Fixed positioning */
+    top: 80px;
+    bottom: 0;
+    background-color: var(--white);
+}
+
+.leftAside {
+    left: 0; /* Stick to the left */
+    /* background-color: blue; */
+}
+
+.rightAside {
+    right: 0; /* Stick to the right */
+    /* background-color: green; */
+}

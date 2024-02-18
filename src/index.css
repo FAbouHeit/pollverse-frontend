@@ -1,4 +1,5 @@
 body {
+  overflow-x: hidden;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -7,6 +8,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  position: relative;
 }
 
 code {
@@ -20,6 +22,7 @@ code {
   --white: #ffffff;
   --lightgray: #4a4b5d;
   --darkgray: #373434;
+  --whisper: #ECE7E7;
 }
 
 

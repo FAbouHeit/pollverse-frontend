@@ -8,6 +8,13 @@ import SignIn from "../Pages/SignIn/SignIn.js";
 import ForgotPassword from "../Pages/ForgotPassword/ForgotPassword.js";
 import RecoveryLink from "../Pages/RecoveryLink/RecoveryLink.js";
 import ActivationLink from "../Pages/ActivationLink/ActivationLink.js";
+import HomeOutlet from "./HomeOutlet/HomeOutlet.js";
+import Home from "../Pages/Home/Home.js";
+import Discover from "../Pages/Discover/Discover.js";
+import Premium from "../Pages/Premium/Premium.js";
+import Notifications from "../Pages/Notifications/Notifications.js";
+import Profile from "../Pages/Profile/Profile.js";
+import Create from "../Pages/Create/Create.js";
 
 
 const AppRouter = () => {
@@ -20,6 +27,14 @@ const AppRouter = () => {
             <Route path="/activation-link" element={<ActivationLink />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/recovery-link" element={<RecoveryLink />} />
+        </Route>
+        <Route path="/" element={<HomeOutlet />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/create" element={<Create />} />
+            <Route path="/discover" element={<Discover />} />
+            <Route path="/premium" element={<Premium />} />
+            <Route path="/notifications" element={<Notifications />} />
+            <Route path="/profile" element={<Profile />} />
         </Route>
       <Route path="/unauthorized" exact element={<Unauthorized />} />
       <Route path="/*"  element={<NotFound />} />

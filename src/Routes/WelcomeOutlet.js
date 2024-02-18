@@ -1,10 +1,7 @@
 import { Outlet } from "react-router-dom";
 import WelcomeHeader from "../Layout/WelcomeHeader/WelcomeHeader";
-// import Navbar from "../Layouts/Navbar/Navbar";
-// import Footer from "../Layouts/Footer/Footer";
 
-
-const Layout = () => {
+const WelcomeOutlet = () => {
     return (
         <>
             <WelcomeHeader/>
@@ -13,4 +10,4 @@ const Layout = () => {
       );
 }
 
-export default Layout
+export default WelcomeOutlet
