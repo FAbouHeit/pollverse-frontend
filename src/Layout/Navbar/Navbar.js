@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Logo from '../../Components/SVG/Logo'
 import { Link, NavLink, useMatch } from 'react-router-dom'
 import Styles from './Navbar.module.css'
@@ -11,6 +11,7 @@ import More from '../../Components/SVG/NavBarIcons/More'
 import Profile from '../../Components/SVG/NavBarIcons/Profile'
 
 export default function Navbar() {
+  const [openMore, setOpenMore] = useState(false);
   return (
     <header className={Styles.header}>
       <Link to="/home">
@@ -25,7 +26,7 @@ export default function Navbar() {
             </NavLink>
           </li>
           <li>
-            <NavLink exact to="/home"  className={({ isActive, isPending }) => isPending ? "pending" : isActive ? Styles.active : ""}>
+            <NavLink exact="true" to="/home"  className={({ isActive, isPending }) => isPending ? "pending" : isActive ? Styles.active : ""}>
               <Home active={useMatch('/home') !== null} />
               My Feed
             </NavLink>
@@ -46,7 +47,7 @@ export default function Navbar() {
             <Notifications/>
               Notifications
           </li>
-          <li>
+          <li className={Styles.moreButton} onClick={()=>setOpenMore(true)}>
             <More/>
               More
           </li>
