@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function Profile({size, active}) {
-  const color = active === true ? "#fff" : "#4478c7";
+  const color = active === true ? "#0f0cc6" : "#4478c7";
   const width = size || 30;
   const height = width;
   return (

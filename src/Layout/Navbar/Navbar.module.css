@@ -3,15 +3,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-left: 25%;  
-    padding-right: 25%; 
+    padding-left: 22%;  
+    padding-right: 22%; 
     position: fixed;
-    width: 50vw;
+    width: 56vw;
     z-index: 2;
+    max-height: 70px;
 }
 
 .nav{
-    max-height: 80px;
+    /* max-height: 80px; */
     display: flex;
 }
 
@@ -31,6 +32,7 @@
     font-size: 0.9em;
     gap: 5px;
     color: var(--lightblue);
+    /* padding: 5px; */
 }
 
 .list > li > a{
@@ -45,12 +47,49 @@
     padding: 5px;
 }
 
-.list > li:hover{
-    opacity: 0.8;
+.list > li:hover:not(:has(ul)) {
+    opacity: 0.5;
 }
 
 .active{
   background-color: var(--darkblue);
   color: white !important;
   border-radius: 10px;
+}
+
+.moreButton{
+    position: relative;
+    display: flex;
+    /* padding: 5px; */
+}
+
+.moreList{
+    position: absolute;
+    top:65px;
+    right: 0;
+    background-color: var(--lightblue);
+    list-style: none;
+    display: none;
+    flex-direction: column;
+    color: white;
+    width: max-content;
+    text-align: left;
+    padding: 0px;
+    border-radius: 3px;
+    border: 1px solid white;
+}
+
+.moreList > li{
+    /* border-bottom: 1px solid var(--white); */
+    padding: 15px;
+    text-align: left;
+}
+
+.listActive{
+    display: flex;
+}
+
+.moreList > li:hover{
+    background-color: red;
+    color: black;
 }

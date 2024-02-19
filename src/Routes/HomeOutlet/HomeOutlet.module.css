@@ -9,18 +9,21 @@
 
 .homeContainer {
     margin: auto;
-    width: 50%; /* Occupy 50% of the container */
+    width: 60%; /* Occupy 50% of the container */
     background-color: var(--whisper); /* Just for visualization */
-    margin-top: 80px;
+    margin-top: 70px;
+    /* margin-top: 80px; */
     z-index: 10;
     height: 1000px;
 }
 
 .leftAside,
 .rightAside {
-    width: 25%; /* 25% width for each aside */
+    width: 20%; /* 25% width for each aside */
+    max-width: 20%;
     position: fixed; /* Fixed positioning */
-    top: 80px;
+    /* top: 80px; */
+    top: 70px;
     bottom: 0;
     background-color: var(--white);
 }

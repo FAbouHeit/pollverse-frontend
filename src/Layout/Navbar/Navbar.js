@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Logo from '../../Components/SVG/Logo'
 import { Link, NavLink, useMatch } from 'react-router-dom'
+import {motion} from 'framer-motion'
 import Styles from './Navbar.module.css'
 import Create from '../../Components/SVG/NavBarIcons/Create'
 import Home from '../../Components/SVG/NavBarIcons/Home'
@@ -11,7 +12,54 @@ import More from '../../Components/SVG/NavBarIcons/More'
 import Profile from '../../Components/SVG/NavBarIcons/Profile'
 
 export default function Navbar() {
+
+  const moreRef = useRef(null);
+  const moreButtonRef = useRef(null);
+  const profileRef = useRef(null);
+  const profileButtonRef = useRef(null);
+  const notificationsRef = useRef(null);
+  const notificationsButtonRef = useRef(null);
+
   const [openMore, setOpenMore] = useState(false);
+  const [openNotifications, setOpenNotifications] = useState(false);
+  const [openProfile, setOpenProfile] = useState(false);
+  const moreUlClassName = [ Styles.moreList, openMore ? Styles.listActive : ""].join(' ');
+  const notificationsUlClassName = [ Styles.moreList, openNotifications ? Styles.listActive : ""].join(' ');
+  const profileUlClassName = [ Styles.moreList, openProfile ? Styles.listActive : ""].join(' ');
+
+
+ 
+
+  
+ 
+
+  useEffect(()=>{
+    console.log("openMore: ", openNotifications)
+  },[openNotifications])
+
+  useEffect(()=>{
+    console.log("mounted")
+  },[])
+
+  const handleClickOutside = (e) => {
+    if (moreRef.current && !moreRef.current.contains(e.target) &&!moreButtonRef.current.contains(e.target)) {
+      setOpenMore(false);
+    }
+    if (notificationsRef.current && !notificationsRef.current.contains(e.target) && !notificationsButtonRef.current.contains(e.target)) {
+      setOpenNotifications(false);
+    }
+    if (profileRef.current && !profileRef.current.contains(e.target) && !profileButtonRef.current.contains(e.target)) {
+      setOpenProfile(false);
+    }
+  };
+
+  useEffect(()=>{
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  },[]);
+  
   return (
     <header className={Styles.header}>
       <Link to="/home">
@@ -43,17 +91,33 @@ export default function Navbar() {
               Premium
             </NavLink>
           </li>
-          <li>
-            <Notifications/>
-              Notifications
+          <li ref={notificationsButtonRef} className={Styles.moreButton} onClick={()=>setOpenNotifications(prev => !prev)} >
+            <Notifications active={openNotifications}/>
+            <motion.div animate={openNotifications ? {color:"#0f0cc6"}:""}>Notifications&#9660;</motion.div>
+              <motion.ul ref={notificationsRef} className={notificationsUlClassName} animate={openNotifications ? {y:0, opacity:1} : {y:-10, opacity:0}}>
+                <li>Settings</li>
+                <li>About Poliverse</li>
+                <li>Become a member</li>
+              </motion.ul>
           </li>
-          <li className={Styles.moreButton} onClick={()=>setOpenMore(true)}>
-            <More/>
-              More
+          <li ref={moreButtonRef} className={Styles.moreButton} onClick={()=>setOpenMore(prev => !prev)}>
+            <More active={openMore}/>
+            <motion.div animate={openMore ? {color:"#0f0cc6"}:""}>More&#9660;</motion.div>
+              <motion.ul ref={moreRef} className={moreUlClassName} animate={openMore ? {y:0, opacity:1} : {y:-10, opacity:0}}>
+                <li>Dark Mode</li>
+                <li>About Poliverse</li>
+                <li>Terms & Conditions</li>
+                <li>Settings</li>
+              </motion.ul>
           </li>
-          <li>
-            <Profile/>
-              Profile
+          <li ref={profileButtonRef} className={Styles.moreButton} onClick={()=>setOpenProfile(prev => !prev)}>
+            <Profile active={openProfile}/>
+            <motion.div animate={openProfile ? {color:"#0f0cc6"}:""}>Profile&#9660;</motion.div>
+            <motion.ul ref={profileRef} className={profileUlClassName} animate={openProfile ? {y:0, opacity:1} : {y:-10, opacity:0}}>
+                <li>Profile</li>
+                <li>My Activity</li>
+                <li>Sign Out</li>
+              </motion.ul>
           </li>
         </ul>
       </nav>
