@@ -67,7 +67,7 @@
     position: absolute;
     top:65px;
     right: 0;
-    background-color: var(--lightblue);
+    background-color: var(--darkgray);
     list-style: none;
     display: none;
     flex-direction: column;
@@ -75,7 +75,7 @@
     width: max-content;
     text-align: left;
     padding: 0px;
-    border-radius: 3px;
+    border-radius: 7px;
     border: 1px solid white;
 }
 
@@ -90,6 +90,7 @@
 }
 
 .moreList > li:hover{
-    background-color: red;
-    color: black;
+    background-color: var(--lightblue);
+    color: white;
+    /* border-radius: 7px; */
 }
