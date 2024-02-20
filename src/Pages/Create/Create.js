@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Styles from './Create.module.css'
 import TwoChoice from '../../Components/SVG/CreateBarIcons/TwoChoice'
 import MultiChoice from '../../Components/SVG/CreateBarIcons/MultiChoice'
@@ -18,9 +18,14 @@ export default function Create() {
   const [selectedPage, setSelectedPage] = useState(pageOptions[0]);
   const [selectedLimit, setSelectedLimit] = useState(limitOptions[0]);
 
-  const [inputValue , setInputValue] = useState("")
-  const [isEditing, setIsEditing] = useState(false);
+  const [textAreaFocused, setTextAreaFocused] = useState(false);
 
+  const [isEditable, setIsEditable] = useState(false);
+
+  const [inputValue , setInputValue] = useState("");
+
+  const articleRef = useRef(null);
+  const textRef = useRef(null);
 
 
   const handlePollSelect = (number) => {
@@ -54,6 +59,22 @@ export default function Create() {
   };
   }
 
+  const colorPick = ()=>{
+    switch(pollNumber){
+      case 1:
+        return "#4478c7"
+      case 2:
+        return "#8a188a"
+      case 3:
+        return "#159115" 
+      case 4:
+        return "#911717"
+      default:
+        return "#4478c7"
+
+    }
+  }
+
   const twoChoiceClass = [isActiveTwoChoice ? Styles.twoChoice : ""].join(' ');
   const multiChoiceClass = [isActiveMultiChoice ? Styles.multiChoice : ""].join(' ');
   const quizClass = [isActiveQuiz ? Styles.quiz : ""].join(' ');
@@ -71,18 +92,21 @@ export default function Create() {
   };
 
   const handleInputClick = () => {
-    setIsEditing(true);
+    // textAreaRef.current.focus();
+    setIsEditable(true)
   };
 
   const handleInputChange = (event) => {
     if (event.target.value.length <= 120) {
-      setInputValue(event.target.value);
+      setInputValue(event.target.value );
     }
   };
 
   const handleInputBlur = () => {
-    setIsEditing(false);
+    // textAreaRef.current.blur();
+    setIsEditable(false);
   };
+
 
   return (
     <section className={Styles.createContainer}>
@@ -108,7 +132,7 @@ export default function Create() {
       </menu>
     
 
-    {pollNumber === 1 &&
+    
     <section className={Styles.twoChoiceCreate}>
       <div className={Styles.createTopSection}>
           <div>
@@ -131,25 +155,24 @@ export default function Create() {
           </select>
           </div>
       </div>
-      <article className={Styles.createArticle} onClick={handleInputClick}>
-      {isEditing ? (
-        <div className={Styles.centeredInputContainer}>
-      <textarea
-        value={inputValue}
-        maxLength={120}
-        rows={1} // Set the number of visible rows as needed
-        cols={12} // Set the number of visible columns as needed
-        className={Styles.centeredInput}
-        onBlur={handleInputBlur}
-        onChange={handleInputChange}
+      <article ref={articleRef} className={Styles.createArticle} style={{backgroundColor: colorPick()}} onClick={handleInputClick}>
+        <textarea type='text' 
+        value={inputValue} 
+        rows={5} 
+        ref={textRef} 
+        className={Styles.centeredText} 
+        onChange={handleInputChange} 
+        onFocus={()=>setTextAreaFocused(true)}
+        placeholder={textAreaFocused ? "" : "What's on your mind?"}
         />
-        </div>
-      ): (
-        <div className={Styles.centeredText}>{inputValue || <span style={{fontStyle:"italic", color:"#a7a7a7"}}>"What's on your mind?"</span>}</div>
-      )}
+        <p className={Styles.capacity}>{inputValue.length}/120</p>
       </article>
+      {pollNumber === 1 && 
+      <>
+
+      </>}
     </section>
-    }
+    
     </section>
   )
 }
