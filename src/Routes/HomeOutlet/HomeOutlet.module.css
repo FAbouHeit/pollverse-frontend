@@ -1,6 +1,7 @@
 .homeOutletContainer {
     display: flex;
-    height: 1000px; /* Full height of the viewport */
+    /* height: 1000px; */
+    height: fit-content;
     display: flex;
     position: relative;
     z-index: 1;
@@ -14,7 +15,9 @@
     margin-top: 70px;
     /* margin-top: 80px; */
     z-index: 10;
-    height: 1000px;
+    /* height: 1000px; */
+    height: fit-content;
+
 }
 
 .leftAside,

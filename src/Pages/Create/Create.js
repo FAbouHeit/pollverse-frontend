@@ -1,10 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Styles from './Create.module.css'
 import TwoChoice from '../../Components/SVG/CreateBarIcons/TwoChoice'
 import MultiChoice from '../../Components/SVG/CreateBarIcons/MultiChoice'
 import Slider from '../../Components/SVG/CreateBarIcons/Slider'
 import Quiz from '../../Components/SVG/CreateBarIcons/Quiz'
 import defaultImage from '../../DeleteAssets/logo512.png'
+import TwoChoiceSection from '../../Components/TwoChoiceSection/TwoChoiceSection'
+import MultiChoiceSection from '../../Components/MultiChoiceSection/MultiChoiceSection'
+import QuizSection from '../../Components/QuizSection/QuizSection'
+import SliderSection from '../../Components/SliderSection/SliderSection'
 
 export default function Create() {
   const [pollNumber, setPollNumber] = useState(1);
@@ -169,8 +173,25 @@ export default function Create() {
       </article>
       {pollNumber === 1 && 
       <>
+      <TwoChoiceSection pollNumber={pollNumber}/>
+      </>
+      }
+      {pollNumber === 2 && 
+      <>
+      <MultiChoiceSection pollNumber={pollNumber}/>
+      </>
+      }
+      {pollNumber === 3 && 
+      <>
+      <QuizSection pollNumber={pollNumber}/>
+      </>
+      }
+      {pollNumber === 4 && 
+      <>
+      <SliderSection pollNumber={pollNumber}/>
+      </>
+      }
 
-      </>}
     </section>
     
     </section>
