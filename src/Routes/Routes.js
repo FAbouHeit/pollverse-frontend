@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import WelcomeOutlet from './WelcomeOutlet.js'
 import Welcome from "../Pages/Welcome/Welcome.js";
 import Unauthorized from "../Pages/Unauthorized/Unauthorized.js";
@@ -15,9 +15,34 @@ import Premium from "../Pages/Premium/Premium.js";
 import Notifications from "../Pages/Notifications/Notifications.js";
 import Profile from "../Pages/Profile/Profile.js";
 import Create from "../Pages/Create/Create.js";
+import { useContext } from "react";
+import { AuthContext } from "../Context/AuthContext.js";
+
+const PrivateRoute = ({ isAllowed, element }) => {
+  const { user, checkUser } = useContext(AuthContext);
+
+  if (checkUser) {
+    return (
+      <div>
+        Loading...
+      </div>
+    );
+  }
+
+  if (checkUser === false && user === null) {
+    return <Navigate to="/unauthorized" />;
+  }
+
+  if (!isAllowed) {
+    return <Navigate to="/unauthorized" />;
+  }
+
+  return element;
+};
 
 
 const AppRouter = () => {
+  const { user } = useContext(AuthContext);
   return (
     <Routes>
         <Route path="/" element={<WelcomeOutlet />}>
@@ -28,14 +53,57 @@ const AppRouter = () => {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/recovery-link" element={<RecoveryLink />} />
         </Route>
-        <Route path="/" element={<HomeOutlet />}>
-            <Route path="/home" element={<Home />} />
-            <Route path="/create" element={<Create />} />
-            <Route path="/discover" element={<Discover />} />
-            <Route path="/premium" element={<Premium />} />
-            <Route path="/notifications" element={<Notifications />} />
-            <Route path="/profile" element={<Profile />} />
+
+        <Route path="/" element={<HomeOutlet />}>  
+            <Route path="/home" element = {
+              <PrivateRoute
+                element={<Home />}
+                isAllowed={user && user.role === "user"}
+              />
+              } 
+            />
+            
+            <Route path="/create" element = {
+              <PrivateRoute
+                element={<Create />}
+                isAllowed={user && user.role === "user"}
+              />
+              } 
+            />
+
+            <Route path="/discover" element = {
+              <PrivateRoute
+                element={<Discover />}
+                isAllowed={user && user.role === "user"}
+              />
+              } 
+            />
+
+            <Route path="/premium" element = {
+              <PrivateRoute
+                element={<Premium />}
+                isAllowed={user && user.role === "user"}
+              />
+              } 
+            />
+
+            <Route path="/notifications" element = {
+              <PrivateRoute
+                element={<Notifications />}
+                isAllowed={user && user.role === "user"}
+              />
+              } 
+            />
+
+            <Route path="/profile" element = {
+              <PrivateRoute
+                element={<Profile />}
+                isAllowed={user && user.role === "user"}
+              />
+              } 
+            />
         </Route>
+
       <Route path="/unauthorized" exact element={<Unauthorized />} />
       <Route path="/*"  element={<NotFound />} />
     </Routes>

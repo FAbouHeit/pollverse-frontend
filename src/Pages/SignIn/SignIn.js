@@ -1,13 +1,18 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Styles from './SignIn.module.css'
 import { IconButton, InputAdornment, TextField } from '@mui/material'
 import NoEye from '../../Components/SVG/NoEye'
 import Eye from '../../Components/SVG/Eye'
 import ShootingStar from '../../Components/SVG/ShootingStar'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import axiosInstance from '../../Utils/AxiosInstance'
+import { AuthContext } from '../../Context/AuthContext'
 
 export default function SignIn() {
+  const { fetchUserData } = useContext(AuthContext);
+
 
     const [formData, setFormData] = useState({
         email: "",
@@ -16,6 +21,10 @@ export default function SignIn() {
 
     const [showPassword, setShowPassword] = useState(false);
     const [errorEmail, setErrorEmail] = useState(false);
+
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+    const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -30,12 +39,26 @@ export default function SignIn() {
         return emailRegex.test(email);
     }
 
-    const handleSubmit = () =>{
+    const handleSubmit = async () =>{
         setErrorEmail(false);
         if(!isValidEmail(formData.email)){
             setErrorEmail(true);
         } else {
-            console.log("formdata: ", formData);
+            console.log("sign in data: ", formData.email, formData.password);
+            console.log( `${process.env.REACT_APP_BACKEND_ENDPOINT}user/sign-in`);
+            try{
+                setError(false);
+                setLoading(true);
+                await axiosInstance.post("user/sign-in", {email: formData.email, password: formData.password});
+                await fetchUserData();
+            } catch (error){
+                console.log("error");
+                setError(true);
+    
+            } finally {
+                setLoading(false);
+                navigate('/home');
+              }
         }
     }
   return (

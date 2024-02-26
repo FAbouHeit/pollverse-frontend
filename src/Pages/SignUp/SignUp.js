@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Styles from './SignUp.module.css'
 import Stars from '../../Components/SVG/Stars'
 import { FormControl, IconButton, InputAdornment, InputLabel, MenuItem, Select, TextField } from '@mui/material';
@@ -10,6 +10,9 @@ import Lock from '../../Components/SVG/Lock';
 import Eye from '../../Components/SVG/Eye';
 import NoEye from '../../Components/SVG/NoEye';
 import Captcha from '../../Components/SVG/Captcha';
+import axiosInstance from '../../Utils/AxiosInstance';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../Context/AuthContext';
 
 
 export default function SignUp() {
@@ -19,6 +22,11 @@ export default function SignUp() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    
+    const navigate = useNavigate();
+    const { fetchUserData } = useContext(AuthContext);
+
+
 
     const [formData, setFormData] = useState({
         firstName: '',
@@ -164,18 +172,26 @@ export default function SignUp() {
         setDirection((prevState) => prevState - 1); // Backward animation
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Perform password validation here
-        // if (passwords.password !== passwords.confirmPassword) {
-        //     alert("Passwords do not match!");
-        //     return;
-        // }
-        // Continue with form submission if passwords match
-        // console.log("Form Data:", formData);
-        // console.log("Passwords:", passwords);
-        // Add your form submission logic here
-        console.log("in handlesubmit")
+    const handleSubmit = async () => {
+        try{
+            
+        await axiosInstance.post("user/sign-up", {
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            email: formData.email,
+            dateOfBirth: formData.dateOfBirth,
+            gender: formData.gender, 
+            password: password,
+        });
+
+        await axiosInstance.post("user/sign-in", {email: formData.email, password: formData.password});
+        await fetchUserData();
+
+        } catch (err) {
+            console.log("error: ", err);
+        } finally {
+            navigate('/home');
+        }
     };
 
     const generateCaptcha = () => {
@@ -196,13 +212,16 @@ export default function SignUp() {
       setIsCaptchaValid(1);
     };
   
-    const handleCaptchaSubmit = (event) => {
+    const handleCaptchaSubmit = async (event) => {
       event.preventDefault();
       if (userInput.toLowerCase() === captcha.toLowerCase()) {
         setIsCaptchaValid(2);
 
-        console.log("Form Data:", formData);
-        console.log("Passwords:", password);
+        // console.log("Form Data:", formData);
+        // console.log("Passwords:", password);
+        // console.log("dateofbirth: ", Date(formData.dateOfBirth));
+        await handleSubmit();
+
       } else {
         setIsCaptchaValid(3);
         setCaptcha(generateCaptcha());
