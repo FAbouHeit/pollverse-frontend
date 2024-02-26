@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import Styles from './MultiChoiceSection.module.css'
 import { TextField } from '@mui/material';
+import axiosInstance from '../../Utils/AxiosInstance';
 
 export default function MultiChoiceSection({pollNumber}) {
 
     const [numberOfOptions, setNumberOfOptions] = useState(3);
-    const [optionsArray, setOptionsArray] = useState(["option1", "option2", "option3"]);
-
+    const [optionsArray, setOptionsArray] = useState(["", "", ""]);
+    const [errorChoice, setErrorChoice] = useState(null);
     
     const handleOptionChange = (index, e) => {
         const newArray = [...optionsArray];
@@ -14,17 +15,40 @@ export default function MultiChoiceSection({pollNumber}) {
         setOptionsArray(newArray);
     };
     
-    const handleMultiChoiceSubmit = (e) =>{
+    const handleMultiChoiceSubmit = async (e) =>{
         if(pollNumber ===2){
             e.preventDefault();
-            console.log("array submitted: ", optionsArray);
         }
+
+        if(optionsArray.length < 3 || optionsArray.length > 10){
+            return;
+        }
+
+        setErrorChoice(null);
+
+        for(let i=0; i < optionsArray.length; i++){
+
+            const profanityFlag =  await axiosInstance.post('/profanity', { array: optionsArray[i].split(" ") }); 
+            if(profanityFlag.data.answer){
+                setErrorChoice(i);
+                return;
+            }
+
+            if(optionsArray[i] === ""){
+                setErrorChoice(i);  
+                return; 
+            }
+        }
+
+        console.log("array submitted: ", optionsArray);
+
+
     }
 
     const handleAddOption = (e)=>{
         e.preventDefault();
         if(numberOfOptions < 10 && numberOfOptions >=3){    
-            setOptionsArray((prev)=> [...prev, "newoption"])
+            setOptionsArray((prev)=> [...prev, ""])
             setNumberOfOptions((prev)=> prev+1);
         }
     }
@@ -46,11 +70,6 @@ export default function MultiChoiceSection({pollNumber}) {
         setNumberOfOptions(optionsArray.length);
     },[optionsArray])
 
-    useEffect(()=>{
-        console.log("number of options now: ", numberOfOptions);
-    },[numberOfOptions])
-
-
   return (
     <form onSubmit={handleMultiChoiceSubmit} className={Styles.twoChoiceForm}>
         {optionsArray.map((element, index)=>{
@@ -60,11 +79,12 @@ export default function MultiChoiceSection({pollNumber}) {
                 id="standard-basic" 
                 key={index}
                 value={element} 
-                label="Option 1" 
+                label={`Response ${index+1}`} 
                 variant="standard" 
-                name='option2'
+                name={`option ${index+1}`}
                 onChange={(e)=> handleOptionChange(index, e)}
                 className={Styles.MultiChoiceOption}
+                error = {errorChoice === index}
             />
             <button onClick={(e) => handleDeleteOption(index,e)} disabled={numberOfOptions <= 3}>Delete</button>
             </div>

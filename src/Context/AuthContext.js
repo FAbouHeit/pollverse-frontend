@@ -5,28 +5,25 @@ import { useNavigate } from "react-router-dom";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-
   const [user, setUser] = useState(null);
-  const [checkUser, setCheckUser] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!user || user === null) {
-        fetchUserData();
+      fetchUserData();
     }
   }, [user]);
 
   const fetchUserData = async () => {
+    setLoading(true);
     try {
-      setCheckUser(true);
       const response = await axiosInstance.get("user/signed-in-user");
       setUser(response.data.user);
-
     } catch (err) {
-      console.log(err);      
-
+      console.log(err);
     } finally {
-      setCheckUser(false);
+      setLoading(false);
     }
   };
 
@@ -35,11 +32,12 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     navigate('/')
   };
+
   return (
     <AuthContext.Provider
       value={{
         user,
-        checkUser,
+        loading,
         setUser,
         logOut,
         fetchUserData,

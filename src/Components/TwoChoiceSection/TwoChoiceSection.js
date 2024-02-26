@@ -1,49 +1,68 @@
 import React, { useState } from 'react'
 import Styles from './TwoChoiceSection.module.css'
 import { TextField } from '@mui/material';
+import axiosInstance from '../../Utils/AxiosInstance';
 
-export default function TwoChoiceSection({pollNumber}) {
-    const [formData, setFormData] = useState({
-        option1: "Yes",
-        option2: "No"
-    });
+export default function TwoChoiceSection({pollNumber, userId}) {
+    const [optionsArray, setOptionsArray] = useState(["", ""]);
+    const [errorChoice, setErrorChoice] = useState(null);
 
     
-    const handleOptionChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
+    
+    const handleOptionChange = (index, e) => {
+        const newArray = [...optionsArray];
+        newArray[index] = e.target.value
+        setOptionsArray(newArray);
     };
     
-    const handleTwoChoiceSubmit = (e) =>{
+    const handleTwoChoiceSubmit = async (e) =>{
         if(pollNumber === 1){
             e.preventDefault();
-            console.log("formData: " ,formData);
         }
+
+        if(optionsArray.length !== 2){
+            return;
+        }
+
+        setErrorChoice(null);
+
+        for(let i=0; i < optionsArray.length; i++){
+            const profanityFlag =  await axiosInstance.post('/profanity', { array: optionsArray[i].split(" ") }); 
+            if(profanityFlag.data.answer){
+                setErrorChoice(i);
+                return;
+            }
+            if(optionsArray[i] === ""){
+                setErrorChoice(i);  
+                return; 
+            }
+        }
+
+        console.log("array submitted: ", optionsArray);
+
     }
 
 
   return (
     <form onSubmit={handleTwoChoiceSubmit} className={Styles.twoChoiceForm}>
-        <TextField id="standard-basic" 
-        value={formData.option1} 
-        label="Option 1" 
-        variant="standard" 
-        onChange={handleOptionChange} 
-        name='option1'
-        className={Styles.twoChoiceOption1}
-        />
-        <TextField 
-        id="standard-basic" 
-        value={formData.option2} 
-        label="Option 2" 
-        variant="standard" 
-        onChange={handleOptionChange}
-        name='option2'
-        className={Styles.twoChoiceOption2}
-        />
+        {optionsArray.map((element, index)=>{
+            return (
+                <div>
+                <TextField 
+                id="standard-basic" 
+                key={index}
+                value={element} 
+                label={`Response ${index+1}`} 
+                variant="standard" 
+                name={`option ${index+1}`}
+                onChange={(e)=> handleOptionChange(index, e)}
+                className={Styles.MultiChoiceOption}
+                error = {errorChoice === index}
+            />
+            </div>
+            )
+        })}
+
         <button onClick={handleTwoChoiceSubmit}  className={Styles.twoChoiceSubmit}>Create</button>
     </form>
   )

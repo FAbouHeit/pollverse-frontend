@@ -15,13 +15,19 @@ import Premium from "../Pages/Premium/Premium.js";
 import Notifications from "../Pages/Notifications/Notifications.js";
 import Profile from "../Pages/Profile/Profile.js";
 import Create from "../Pages/Create/Create.js";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../Context/AuthContext.js";
 
 const PrivateRoute = ({ isAllowed, element }) => {
-  const { user, checkUser } = useContext(AuthContext);
+  const { user, loading, fetchUserData } = useContext(AuthContext);
 
-  if (checkUser) {
+  useEffect(() => {
+    if (!user) {
+      fetchUserData();
+    }
+  }, [user, fetchUserData]);
+
+  if (loading) {
     return (
       <div>
         Loading...
@@ -29,11 +35,7 @@ const PrivateRoute = ({ isAllowed, element }) => {
     );
   }
 
-  if (checkUser === false && user === null) {
-    return <Navigate to="/unauthorized" />;
-  }
-
-  if (!isAllowed) {
+  if (user && !isAllowed) {
     return <Navigate to="/unauthorized" />;
   }
 

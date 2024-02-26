@@ -6,7 +6,6 @@ import NoEye from '../../Components/SVG/NoEye'
 import Eye from '../../Components/SVG/Eye'
 import ShootingStar from '../../Components/SVG/ShootingStar'
 import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import axiosInstance from '../../Utils/AxiosInstance'
 import { AuthContext } from '../../Context/AuthContext'
 

@@ -1,28 +1,31 @@
 import { Slider, TextField } from '@mui/material'
 import React, { useState } from 'react'
 import Styles from './SliderSection.module.css'
+import axiosInstance from '../../Utils/AxiosInstance';
 
 export default function SliderSection({pollNumber}) {
-    const [optionsArray, setOptionsArray] = useState([{name: "one", value: 0},{name: "two", value: 100}])
+    const [optionsArray, setOptionsArray] = useState([{name: "", value: 0},{name: "", value: 100}])
     const [numberError, setNumberError] = useState(false); 
-    const marks = [
-        {
-          value: 0,
-          label: '0°C',
-        },
-        {
-          value: 20,
-          label: '20°C',
-        },
-        {
-          value: 37,
-          label: '37°C',
-        },
-        {
-          value: 100,
-          label: '100°C',
-        },
-      ];
+    const [errorChoice, setErrorChoice] = useState(null);
+
+    // const marks = [
+    //     {
+    //       value: 0,
+    //       label: '0°C',
+    //     },
+    //     {
+    //       value: 20,
+    //       label: '20°C',
+    //     },
+    //     {
+    //       value: 37,
+    //       label: '37°C',
+    //     },
+    //     {
+    //       value: 100,
+    //       label: '100°C',
+    //     },
+    //   ];
 
       const handleOptionChange = (index, e) => {
         e.preventDefault();
@@ -35,7 +38,7 @@ export default function SliderSection({pollNumber}) {
        
         const newValue = e.target.value;
         const newArray = [...optionsArray];
-        newArray[index].value = newValue;
+        newArray[index].value = Number(newValue);
         setOptionsArray(newArray);
         if(
             optionsArray[1].value
@@ -48,11 +51,29 @@ export default function SliderSection({pollNumber}) {
             }
     }
 
-    const handleQuizSubmit = (e)=>{
-        if(pollNumber===4 && !numberError){
+    const handleQuizSubmit = async (e)=>{
+      if(pollNumber===4 && !numberError){
         e.preventDefault();
-        console.log("QuizArray: ", optionsArray);
+      }
+
+      if(optionsArray.length !== 2){
+        return;
+      }
+
+      setErrorChoice(null);
+
+      for(let i=0; i < optionsArray.length; i++){
+        const profanityFlag =  await axiosInstance.post('/profanity', { array: optionsArray[i].name.split(" ") }); 
+        if(profanityFlag.data.answer){
+            setErrorChoice(i);
+            return;
         }
+        if(optionsArray[i].name === ""){
+            setErrorChoice(i);  
+            return; 
+        }
+      }
+      console.log("QuizArray: ", optionsArray);
     }
 
   return (
@@ -65,8 +86,9 @@ export default function SliderSection({pollNumber}) {
             label="Option 1" 
             variant="standard" 
             onChange={(e)=>handleOptionChange(0, e)} 
-            name='option1'
+            name='option 1'
             className={Styles.twoChoiceOption1}
+            error = {errorChoice === 0}
             />
             <TextField
             id="outlined-number"
@@ -89,6 +111,7 @@ export default function SliderSection({pollNumber}) {
             onChange={(e)=>handleOptionChange(1, e)} 
             name='option2'
             className={Styles.twoChoiceOption2}
+            error = {errorChoice === 1}
             />
             <TextField
             id="outlined-number"

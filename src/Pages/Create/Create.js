@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Styles from './Create.module.css'
 import TwoChoice from '../../Components/SVG/CreateBarIcons/TwoChoice'
 import MultiChoice from '../../Components/SVG/CreateBarIcons/MultiChoice'
@@ -9,6 +9,7 @@ import TwoChoiceSection from '../../Components/TwoChoiceSection/TwoChoiceSection
 import MultiChoiceSection from '../../Components/MultiChoiceSection/MultiChoiceSection'
 import QuizSection from '../../Components/QuizSection/QuizSection'
 import SliderSection from '../../Components/SliderSection/SliderSection'
+import { AuthContext } from '../../Context/AuthContext'
 
 export default function Create() {
   const [pollNumber, setPollNumber] = useState(1);
@@ -30,6 +31,15 @@ export default function Create() {
 
   const articleRef = useRef(null);
   const textRef = useRef(null);
+
+  const { user, fetchUserData } = useContext(AuthContext);
+  const userId = user ? user.id : null;
+
+  useEffect(() => {
+    if (!user) {
+      fetchUserData();
+    }
+  }, [user, fetchUserData]);
 
 
   const handlePollSelect = (number) => {
@@ -173,22 +183,22 @@ export default function Create() {
       </article>
       {pollNumber === 1 && 
       <>
-      <TwoChoiceSection pollNumber={pollNumber}/>
+      <TwoChoiceSection pollNumber={pollNumber} userId={userId}/>
       </>
       }
       {pollNumber === 2 && 
       <>
-      <MultiChoiceSection pollNumber={pollNumber}/>
+      <MultiChoiceSection pollNumber={pollNumber} userId={userId}/>
       </>
       }
       {pollNumber === 3 && 
       <>
-      <QuizSection pollNumber={pollNumber}/>
+      <QuizSection pollNumber={pollNumber} userId={userId}/>
       </>
       }
       {pollNumber === 4 && 
       <>
-      <SliderSection pollNumber={pollNumber}/>
+      <SliderSection pollNumber={pollNumber} userId={user.id}/>
       </>
       }
 
