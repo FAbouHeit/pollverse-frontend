@@ -3,7 +3,7 @@ import Styles from './TwoChoiceSection.module.css'
 import { TextField } from '@mui/material';
 import axiosInstance from '../../Utils/AxiosInstance';
 
-export default function TwoChoiceSection({pollNumber, userId}) {
+export default function TwoChoiceSection({pollNumber, handlePostSubmit}) {
     const [optionsArray, setOptionsArray] = useState(["", ""]);
     const [errorChoice, setErrorChoice] = useState(null);
 
@@ -39,6 +39,7 @@ export default function TwoChoiceSection({pollNumber, userId}) {
         }
 
         console.log("array submitted: ", optionsArray);
+        handlePostSubmit(optionsArray);
 
     }
 
@@ -47,7 +48,7 @@ export default function TwoChoiceSection({pollNumber, userId}) {
     <form onSubmit={handleTwoChoiceSubmit} className={Styles.twoChoiceForm}>
         {optionsArray.map((element, index)=>{
             return (
-                <div>
+                <div key={index}>
                 <TextField 
                 id="standard-basic" 
                 key={index}

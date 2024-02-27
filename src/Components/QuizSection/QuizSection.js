@@ -3,7 +3,7 @@ import Styles from './QuizSection.module.css';
 import { TextField } from '@mui/material';
 import axiosInstance from '../../Utils/AxiosInstance';
 
-export default function QuizSection({ pollNumber }) {
+export default function QuizSection({ pollNumber, handlePostSubmit }) {
     const [optionsArray, setOptionsArray] = useState([
         { name: "", value: false },
         { name: "", value: false },
@@ -62,7 +62,8 @@ export default function QuizSection({ pollNumber }) {
         }
 
         console.log("array submitted: ", optionsArray);
-    
+        handlePostSubmit(optionsArray);
+        
     }
 
     return (

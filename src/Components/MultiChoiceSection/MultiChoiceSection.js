@@ -3,7 +3,7 @@ import Styles from './MultiChoiceSection.module.css'
 import { TextField } from '@mui/material';
 import axiosInstance from '../../Utils/AxiosInstance';
 
-export default function MultiChoiceSection({pollNumber}) {
+export default function MultiChoiceSection({pollNumber, handlePostSubmit}) {
 
     const [numberOfOptions, setNumberOfOptions] = useState(3);
     const [optionsArray, setOptionsArray] = useState(["", "", ""]);
@@ -41,8 +41,7 @@ export default function MultiChoiceSection({pollNumber}) {
         }
 
         console.log("array submitted: ", optionsArray);
-
-
+        handlePostSubmit(optionsArray);
     }
 
     const handleAddOption = (e)=>{

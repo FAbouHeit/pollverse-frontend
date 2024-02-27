@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Styles from './SliderSection.module.css'
 import axiosInstance from '../../Utils/AxiosInstance';
 
-export default function SliderSection({pollNumber}) {
+export default function SliderSection({pollNumber, handlePostSubmit}) {
     const [optionsArray, setOptionsArray] = useState([{name: "", value: 0},{name: "", value: 100}])
     const [numberError, setNumberError] = useState(false); 
     const [errorChoice, setErrorChoice] = useState(null);
@@ -74,6 +74,8 @@ export default function SliderSection({pollNumber}) {
         }
       }
       console.log("QuizArray: ", optionsArray);
+      handlePostSubmit(optionsArray);
+
     }
 
   return (

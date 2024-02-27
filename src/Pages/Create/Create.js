@@ -10,6 +10,7 @@ import MultiChoiceSection from '../../Components/MultiChoiceSection/MultiChoiceS
 import QuizSection from '../../Components/QuizSection/QuizSection'
 import SliderSection from '../../Components/SliderSection/SliderSection'
 import { AuthContext } from '../../Context/AuthContext'
+import axiosInstance from '../../Utils/AxiosInstance'
 
 export default function Create() {
   const [pollNumber, setPollNumber] = useState(1);
@@ -18,16 +19,15 @@ export default function Create() {
   const [isActiveQuiz, setIsActiveQuiz] = useState(false);
   const [isActiveSlider, setIsActiveSlider] = useState(false);
 
-  const pageOptions = ["Everyone", "Community"]
+  const pageOptions = ["Public", "Private"]
   const limitOptions = ["24hr", "unlimited"]
   const [selectedPage, setSelectedPage] = useState(pageOptions[0]);
   const [selectedLimit, setSelectedLimit] = useState(limitOptions[0]);
 
   const [textAreaFocused, setTextAreaFocused] = useState(false);
 
-  const [isEditable, setIsEditable] = useState(false);
-
   const [inputValue , setInputValue] = useState("");
+  const [inputValueProfanity, setInputValueProfanity] = useState(false);
 
   const articleRef = useRef(null);
   const textRef = useRef(null);
@@ -107,7 +107,7 @@ export default function Create() {
 
   const handleInputClick = () => {
     // textAreaRef.current.focus();
-    setIsEditable(true)
+    // setIsEditable(true)
   };
 
   const handleInputChange = (event) => {
@@ -116,10 +116,56 @@ export default function Create() {
     }
   };
 
-  const handleInputBlur = () => {
-    // textAreaRef.current.blur();
-    setIsEditable(false);
-  };
+  // const handleInputBlur = () => {
+  //   // textAreaRef.current.blur();
+  //   // setIsEditable(false);
+  // };
+
+  const handlePostSubmit = async (options) =>{
+      setInputValueProfanity(false);
+      if(!inputValue || inputValue === ""){
+        return;
+      }
+
+      try{
+      const profanityFlag =  await axiosInstance.post('/profanity', { array: inputValue.split(" ") }); 
+      if(profanityFlag.data.answer){
+          setInputValueProfanity(true);
+          return;
+      }
+
+      let type = "";
+
+      switch(pollNumber){
+        case 1: 
+          type = "twoChoice" 
+          break;
+        case 2: 
+          type = "multiChoice" 
+          break;        
+        case 3: 
+          type = "quiz" 
+          break;        
+        case 4: 
+          type = "slider" 
+          break;
+        default:
+          break;
+      }
+
+      await axiosInstance.post('/post/create', { 
+        userId,
+        caption: inputValue,
+        type,
+        options,
+        visibility: selectedPage.toLowerCase(),
+        isSponsored: false,
+
+      }); 
+    } catch (err) {
+      console.log("error: ", err);
+    }
+  }
 
 
   return (
@@ -181,24 +227,26 @@ export default function Create() {
         />
         <p className={Styles.capacity}>{inputValue.length}/120</p>
       </article>
+        {inputValueProfanity && <p style={{color:"red"}}>Profanity is not allowed.</p>}
+
       {pollNumber === 1 && 
       <>
-      <TwoChoiceSection pollNumber={pollNumber} userId={userId}/>
+      <TwoChoiceSection pollNumber={pollNumber} handlePostSubmit={handlePostSubmit}/>
       </>
       }
       {pollNumber === 2 && 
       <>
-      <MultiChoiceSection pollNumber={pollNumber} userId={userId}/>
+      <MultiChoiceSection pollNumber={pollNumber} handlePostSubmit={handlePostSubmit}/>
       </>
       }
       {pollNumber === 3 && 
       <>
-      <QuizSection pollNumber={pollNumber} userId={userId}/>
+      <QuizSection pollNumber={pollNumber} handlePostSubmit={handlePostSubmit}/>
       </>
       }
       {pollNumber === 4 && 
       <>
-      <SliderSection pollNumber={pollNumber} userId={user.id}/>
+      <SliderSection pollNumber={pollNumber} handlePostSubmit={handlePostSubmit}/>
       </>
       }
 
