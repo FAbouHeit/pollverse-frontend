@@ -21,11 +21,11 @@ import { AuthContext } from "../Context/AuthContext.js";
 const PrivateRoute = ({ isAllowed, element }) => {
   const { user, loading, fetchUserData } = useContext(AuthContext);
 
-  useEffect(() => {
-    if (!user) {
-      fetchUserData();
-    }
-  }, [user, fetchUserData]);
+  // useEffect(() => {
+  //   if (!user) {
+  //     fetchUserData();
+  //   }
+  // }, [user, fetchUserData]);
 
   if (loading) {
     return (
@@ -80,7 +80,7 @@ const AppRouter = () => {
               />
               } 
             />
-
+       
             <Route path="/premium" element = {
               <PrivateRoute
                 element={<Premium />}
