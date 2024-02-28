@@ -4,7 +4,7 @@
     margin: 0 auto 50px auto;
     border-radius: 10px;
     min-height: 500px;
-    
+    transition: all 0.2s ease-in;
 }
 
 .captionContainer{
@@ -31,8 +31,11 @@
     list-style: none;
     display: flex;
     justify-content: center;
-    background-color: none;
-    padding: 0;
+    /* background-color: none; */
+    padding: 5px;
+    margin: 0;
+    box-shadow: 0px 0px 3px rgb(136, 136, 136);
+    border-radius: 5px;
 }
 
 .menuListItem:first-child{
@@ -45,7 +48,7 @@
 
 .menuListItem{
     width: 33%;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
 }
 
 .menuButton{
@@ -56,6 +59,8 @@
     cursor: pointer;
     background-color: white;
     transition: all 0.2s;
+    font-weight: 600;
+
 }
 
 .menuButton:hover{
@@ -69,5 +74,103 @@
     color: var(--darkblue);
 }
 
-.commentSectionContainer {
+
+
+.postTopSection{
+    /* background-color: yellowgreen; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 95%;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.imageNameAndDate{
+    display: flex;
+    /* background-color: blue; */
+}
+
+.nameAndDate{
+    /* background-color: yellow; */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.nameAndDate > p{
+    font-size: 1.3rem;
+}
+
+.nameAndDate > span{
+    position: absolute;
+    bottom: 5%;
+    left: 0;
+    color: rgb(158, 158, 158);
+}
+
+.reportButtonParent{
+    position: relative;
+    padding: 20px;
+    cursor: pointer;
+    /* background-color: blue; */
+}
+
+.reportMenu {
+    position: absolute;
+    background-color: var(--darkgray);
+    padding: 20px;
+    list-style: none;
+    color: white;
+    border-radius: 7px;
+}
+
+.reportMenu > ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.commentSectionContainer{
+    /* background-color: gray; */
+    /* color: white; */
+    color: black;
+    border-radius: 7px;
+}
+
+.commentContainerName{
+    margin: 0;
+    font-size: 1.5rem;
+    padding: 20px;
+    font-weight: 200;
+    background-color: var(--darkgray);
+    /* box-shadow: 0px 3px 5px black; */
+    color: white;
+}
+
+.singleCommentContainer{
+    /* border: 1px solid black; */
+    padding: 10px 0;
+    border-bottom: 1px solid lightgray;
+}
+
+.singleCommentTop{
+    display: flex;
+    gap: 5px;
+}
+
+.commentName{
+    margin: 0;
+    align-self: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.commentDate{
+    align-self: center;
+    color: var(--lightblue);
+    font-style: italic;
 }

@@ -1,9 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import axiosInstance from "../../Utils/AxiosInstance";
 import Styles from "./Discover.module.css";
 import { AuthContext } from "../../Context/AuthContext";
 import { TextField } from "@mui/material";
 import {motion} from 'framer-motion';
+import defaultUserImage from '../../Static/defaultuser.png'
+import dateConverter from '../../Utils/DateConverter.js'
+import More from "../../Components/SVG/NavBarIcons/More";
 
 export default function Discover() {
   const [posts, setPosts] = useState([]);
@@ -14,9 +17,12 @@ export default function Discover() {
   const [toggleReplies, setToggleReplies] = useState(null);
   const [toggleCommentSection, setToggleCommentSection] = useState(null);
   const [openModal, setOpenModal] = useState(false);
+  const [openReport, setOpenReport] = useState(null);
 
-  const [buttonPos, setButtonPos] = useState({ x: 0, y: 0 });
-  const [modalPos, setModalPos] = useState({ x: "50vw", y: "50vh" });
+  const reportRef = useRef(null);
+  const reportButtonRef = useRef(null);
+  
+
 
 
   const { user, loading, setUser } = useContext(AuthContext);
@@ -32,6 +38,20 @@ export default function Discover() {
     }
     setPageLoading(false);
   };
+
+  const handleClickOutside = (e) => {
+      if (reportRef.current && !reportRef.current.contains(e.target) &&!reportButtonRef.current.contains(e.target)) {
+        // if (!reportRef.current.contains(e.target)) {
+      setOpenReport(null);
+    }
+  }
+
+  useEffect(()=>{
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  },[]);
 
   useEffect(() => {
     if (openModal) {
@@ -51,7 +71,7 @@ export default function Discover() {
       getPosts();
       // console.log(user)
     }
-  }, []);
+  });
 
   const getBackgroundColor = (postType) => {
     switch (postType) {
@@ -123,11 +143,8 @@ export default function Discover() {
   const handleShareButton = async (e, index) => {
     e.preventDefault(); 
     setOpenModal(true);
-    setButtonPos({ x: e.clientX, y: e.clientY });
-
   };
 
-  const handleCommentInput = (e) => {};
 
   const submitComment = async (postIndex, commentIndex) => {
     setCommentInputError(false);
@@ -208,13 +225,23 @@ export default function Discover() {
     return total;
   };
 
+  const handleOpenReportButton = (e, index) => {
+    e.preventDefault();
+    if(index !== openReport){
+      setOpenReport(index)
+    } else {
+      setOpenReport(null);
+    }
+
+  }
+
   const containerVariants = {
     hidden: {
-      y: -50,
+      // y: -50,
       opacity: 0,
     },
     visible: {
-      y: 0,
+      // y: 0,
       opacity: 1,
       transition: {
         duration: 0.5,
@@ -265,6 +292,28 @@ export default function Discover() {
           const postIndex = index;
           return (
             <section key={index} className={Styles.onePost}>
+              <section className={Styles.postTopSection}>
+
+              <div className={Styles.imageNameAndDate}>
+                <img src={defaultUserImage} height={70} width={70} alt="userdefault" style={{borderRadius: "50%", border:"1px solid black"}}/>
+                <div className={Styles.nameAndDate}>
+                  <p>{posts[index].userId.firstName +" " + posts[index].userId.lastName}</p>
+                  <span>{dateConverter(posts[index].createdAt)}</span>
+                </div>
+              </div>
+
+              <div className={Styles.reportButtonParent} onClick={(e)=>handleOpenReportButton(e, index)}>
+                <div ref={reportRef} className={Styles.reportButtonContainer}>
+                  <More/>
+                </div>
+                  {/* <motion.div className={Styles.reportMenu} animate={openReport ===index ? {y:0, opacity:1} : {y:-10, opacity:0}}> */}
+                  <motion.div className={Styles.reportMenu} animate={openReport ===index ? {opacity:1} : {opacity:0}}>
+                  <ul >
+                    <li ref={reportButtonRef} onClick={()=> setOpenReport(false)}>Report</li>
+                  </ul>
+                </motion.div>
+              </div>
+              </section>
               <section
                 className={Styles.captionContainer}
                 style={{ backgroundColor: getBackgroundColor(element.type) }}
@@ -315,12 +364,17 @@ export default function Discover() {
               initial="hidden"
               animate="visible"
               >
-                Comments
+               <p className={Styles.commentContainerName}>Comments</p>
                 <section className={Styles.allComments}>
                   {element.comments.map((comment, index) => {
                     return (
-                      <div key={index}>
-                        {comment.text}
+                      <div key={index} className={Styles.singleCommentContainer}>
+                        <div className={Styles.singleCommentTop}>
+                          <img src={defaultUserImage} alt="default" height={40} width={40}/>
+                          <p className={Styles.commentName}>{posts[postIndex].comments[index].userId.firstName + " " + posts[postIndex].comments[index].userId.lastName}</p>
+                          <span className={Styles.commentDate}>{dateConverter(posts[postIndex].comments[index].createdAt)}</span>
+                        </div>
+                          <p>{comment.text}</p>
                         <button onClick={() => setReplyTo(index)}>reply</button>
                         {comment.replies.length > 0 ? (
                           <button
