@@ -33,7 +33,7 @@ export default function Create() {
   const textRef = useRef(null);
 
   const { user, fetchUserData } = useContext(AuthContext);
-  const userId = user ? user.id : null;
+  const userId = user ? user._id : null;
 
   useEffect(() => {
     if (!user) {
