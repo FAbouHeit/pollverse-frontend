@@ -13,8 +13,13 @@ export default function Discover() {
   const [replyTo, setReplyTo] = useState(null);
   const [toggleReplies, setToggleReplies] = useState(null);
   const [toggleCommentSection, setToggleCommentSection] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
 
-  const { fetchUserData, user, loading, setUser } = useContext(AuthContext);
+  const [buttonPos, setButtonPos] = useState({ x: 0, y: 0 });
+  const [modalPos, setModalPos] = useState({ x: "50vw", y: "50vh" });
+
+
+  const { user, loading, setUser } = useContext(AuthContext);
 
   const getPosts = async () => {
     try {
@@ -27,6 +32,19 @@ export default function Discover() {
     }
     setPageLoading(false);
   };
+
+  useEffect(() => {
+    if (openModal) {
+      document.body.style.overflow = 'hidden'; // Prevent scrolling
+    } else {
+      document.body.style.overflow = 'auto'; // Enable scrolling
+    }
+
+    // Cleanup function
+    return () => {
+      document.body.style.overflow = 'auto'; // Reset overflow on unmount
+    };
+  }, [openModal]);
 
   useEffect(() => {
     if (!loading && user) {
@@ -103,7 +121,10 @@ export default function Discover() {
   };
 
   const handleShareButton = async (e, index) => {
-    e.preventDefault();
+    e.preventDefault(); 
+    setOpenModal(true);
+    setButtonPos({ x: e.clientX, y: e.clientY });
+
   };
 
   const handleCommentInput = (e) => {};
@@ -202,10 +223,45 @@ export default function Discover() {
     },
   };
 
+
   return (
     <>
       {posts && posts.length > 0 && !pageLoading ? (
-        posts.map((element, index) => {
+        
+        <>
+
+{
+  openModal &&
+  <motion.div
+  // variants={containerVariants}
+  // initial="hidden"
+  // animate="visible"
+  style={{
+      position: "absolute",
+      height: "300px",
+      width: "300px",
+      backgroundColor: "red",
+      left: "50vw",
+      top: `calc(50vh + ${window.scrollY}px)`,
+      transform: "translateY(-50%) translateX(-50%)",
+      zIndex: 100
+    }}
+    onClick={(e) => e.stopPropagation()}
+  >
+    words are cool
+  </motion.div>
+}
+<>
+  {openModal && (
+    <div
+      onClick={() => setOpenModal(false)}
+      style={{ position: "fixed", top: 0, left: 0, bottom: 0, right: 0, backgroundColor: "rgba(0,0,0,0.5)", zIndex: 99}}
+    />
+  )}
+</>
+
+
+        {posts.map((element, index) => {
           const postIndex = index;
           return (
             <section key={index} className={Styles.onePost}>
@@ -313,11 +369,19 @@ export default function Discover() {
             </section>
           );
         })
+        
+      }
+      </>
+
+    
       ) : pageLoading ? (
         <p>pageLoading</p>
       ) : (
         <p>No posts!</p>
       )}
+
+
+
     </>
   );
 }
