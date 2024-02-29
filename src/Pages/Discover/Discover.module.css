@@ -23,8 +23,10 @@
 }
 
 .pollFigure{
-    min-height: 300px;
-    background-color: gray;
+    /* min-height: 300px; */
+    /* background-color: gray; */
+    /* border: 1px solid gray; */
+    /* background-color: #544f4f; */
 }
 
 .menuContainer{
@@ -155,11 +157,17 @@
     /* border: 1px solid black; */
     padding: 10px 0;
     border-bottom: 1px solid lightgray;
+    width: 90%;
+    margin: auto
 }
 
 .singleCommentTop{
     display: flex;
     gap: 5px;
+}
+
+.commentText{
+    padding-left: 5px;
 }
 
 .commentName{
@@ -173,4 +181,58 @@
     align-self: center;
     color: var(--lightblue);
     font-style: italic;
+}
+
+.viewButton, .replyButton{
+    border: none;
+    background-color: inherit;
+    font-size: 1rem;
+    color: var(--lightblue);
+    cursor: pointer;
+}
+
+.viewButton:active, .replyButton:active{
+    opacity: 0.7;
+}
+
+.replyContainer{
+    display: flex;
+    flex-direction: column;
+    padding: 1% 3%;
+    background-color: rgb(222, 224, 246);
+    margin-bottom: 5px;
+    border-radius: 5px;
+    margin-top: 13px;
+}
+
+.replySpan{
+    color: var(--lightblue);
+    font-style: italic;
+}
+
+.sendCommentContainer{
+    /* background-color: red; */
+    display: flex;
+    align-items: center;
+    margin: auto;
+    margin-top: 30px;
+    justify-content: center;
+    gap: 10px;
+    padding-bottom: 30px;
+    width: 90%;
+}
+
+.sendButton{
+    background-color: var(--darkgray);
+    border: none;
+    width: 100px;
+    height: 57px;
+    border-radius: 5px;
+    font-size: 1rem;
+    color: white;
+    cursor: pointer;
+}
+
+.sendButton:active{
+    background-color: #544f4f;
 }

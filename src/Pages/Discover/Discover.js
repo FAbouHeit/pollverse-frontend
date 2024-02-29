@@ -7,6 +7,10 @@ import {motion} from 'framer-motion';
 import defaultUserImage from '../../Static/defaultuser.png'
 import dateConverter from '../../Utils/DateConverter.js'
 import More from "../../Components/SVG/NavBarIcons/More";
+import MultiChoice from "../../Components/PollTypes/MultiChoice/MultiChoice";
+import Quiz from "../../Components/PollTypes/Quiz/Quiz";
+import Slider from "../../Components/PollTypes/Slider/Slider";
+import TwoChoice from "../../Components/PollTypes/TwoChoice/TwoChoice";
 
 export default function Discover() {
   const [posts, setPosts] = useState([]);
@@ -71,7 +75,7 @@ export default function Discover() {
       getPosts();
       // console.log(user)
     }
-  });
+  },[]);
 
   const getBackgroundColor = (postType) => {
     switch (postType) {
@@ -165,11 +169,16 @@ export default function Discover() {
       let newPosts = [...posts];
       let commentsArray = newPosts[postIndex].comments;
       let newComment = {
-        userId: user._id,
+        userId: {
+        id: user._id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+        },  
         text: commentInput,
         type: "comment",
         parentId: newPosts[postIndex]._id,
         replies: [],
+        createdAt: Date.now()
       };
       commentsArray.push(newComment);
       newPosts[postIndex].comments = commentsArray;
@@ -235,6 +244,22 @@ export default function Discover() {
 
   }
 
+
+  const getPoll = (type, options, responses, postId)=> {
+    switch (type){
+      case "twoChoice": 
+        return <TwoChoice options={options} responses={responses} postId={postId}/>;
+      case "multiChoice": 
+      return <MultiChoice/>;
+      case "quiz": 
+      return <Quiz/>;
+      case "slider":
+        return <Slider/>;
+      default:
+        return; 
+    }
+  }
+
   const containerVariants = {
     hidden: {
       // y: -50,
@@ -245,10 +270,12 @@ export default function Discover() {
       opacity: 1,
       transition: {
         duration: 0.5,
-        ease: "easeInOut",
+        ease: "ease",
       },
     },
   };
+
+
 
 
   return (
@@ -281,7 +308,7 @@ export default function Discover() {
 <>
   {openModal && (
     <div
-      onClick={() => setOpenModal(false)}
+      onClick={() => {setOpenModal(false)}}
       style={{ position: "fixed", top: 0, left: 0, bottom: 0, right: 0, backgroundColor: "rgba(0,0,0,0.5)", zIndex: 99}}
     />
   )}
@@ -309,7 +336,7 @@ export default function Discover() {
                   {/* <motion.div className={Styles.reportMenu} animate={openReport ===index ? {y:0, opacity:1} : {y:-10, opacity:0}}> */}
                   <motion.div className={Styles.reportMenu} animate={openReport ===index ? {opacity:1} : {opacity:0}}>
                   <ul >
-                    <li ref={reportButtonRef} onClick={()=> setOpenReport(false)}>Report</li>
+                    <li ref={reportButtonRef} onClick={()=> {setOpenReport(false)}}>Report</li>
                   </ul>
                 </motion.div>
               </div>
@@ -321,37 +348,39 @@ export default function Discover() {
                 <p className={Styles.postCaption}>{element.caption}</p>
               </section>
 
-              <div className={Styles.pollFigure}></div>
+              <div className={Styles.pollFigure}>
+                {getPoll(element.type, element.options, element.responses, element._id)}
+              </div>
 
               <menu className={Styles.menuContainer}>
                 <li className={Styles.menuListItem}>
                   <button
                     className={Styles.menuButton}
-                    onClick={(e) => handleLikeButton(e, element._id, index)}
+                    onClick={(e) => {handleLikeButton(e, element._id, index)}}
                     style={
                       user.likedPosts.includes(element._id)
                         ? { color: "#0f0cc6" }
                         : {}
                     }
                   >
-                    {element.likes} Upvote
+                    {element.likes} Upvotes
                   </button>
                 </li>
                 <li className={Styles.menuListItem}>
                   <button
                     className={Styles.menuButton}
-                    onClick={(e) => handleCommentButton(e, index)}
+                    onClick={(e) => {handleCommentButton(e, index)}}
                   >
                     {element.comments.length > 0
                       ? getTotalNumberofComments(postIndex)
                       : 0}{" "}
-                    Comment
+                    Comments
                   </button>
                 </li>
                 <li className={Styles.menuListItem}>
                   <button
                     className={Styles.menuButton}
-                    onClick={(e) => handleShareButton(e, index)}
+                    onClick={(e) => {handleShareButton(e, index)}}
                   >
                     Share
                   </button>
@@ -366,7 +395,7 @@ export default function Discover() {
               >
                <p className={Styles.commentContainerName}>Comments</p>
                 <section className={Styles.allComments}>
-                  {element.comments.map((comment, index) => {
+                  { element.comments.map((comment, index) => {
                     return (
                       <div key={index} className={Styles.singleCommentContainer}>
                         <div className={Styles.singleCommentTop}>
@@ -374,13 +403,14 @@ export default function Discover() {
                           <p className={Styles.commentName}>{posts[postIndex].comments[index].userId.firstName + " " + posts[postIndex].comments[index].userId.lastName}</p>
                           <span className={Styles.commentDate}>{dateConverter(posts[postIndex].comments[index].createdAt)}</span>
                         </div>
-                          <p>{comment.text}</p>
-                        <button onClick={() => setReplyTo(index)}>reply</button>
+                          <p className={Styles.commentText}>{comment.text}</p>
+                        <button className={Styles.replyButton} onClick={() => {setReplyTo(index)}}>reply</button>
                         {comment.replies.length > 0 ? (
                           <button
-                            onClick={() => handleViewReplies(postIndex, index)}
+                          className={Styles.viewButton}
+                          onClick={() => {handleViewReplies(postIndex, index)}}
                           >
-                            view replies
+                            {toggleReplies !== postIndex.toString() + index.toString() ? "view replies" : "hide replies"}
                           </button>
                         ) : (
                           <></>
@@ -389,7 +419,15 @@ export default function Discover() {
                         postIndex.toString() + index.toString() ? (
                           <>
                             {comment.replies.map((reply, index) => {
-                              return <p key={index}>{reply.text}</p>;
+                              return (
+                              <div className={Styles.replyContainer}>
+                                <div style={{display:"flex", alignItems:"center", width: "100%", gap:"5px"}}>
+                                  <img src={defaultUserImage} height={30} width={30} alt="userdefault"/>
+                                  <p><span style={{fontWeight: "bold"}}>{reply.userId.firstName +" "+ reply.userId.lastName}</span>  <span className={Styles.replySpan}> --replied</span></p>
+                                </div>
+                              <p key={index} style={{margin: "1rem"}}>{reply.text}</p>
+                              </div>
+                              );
                             })}
                           </>
                         ) : (
@@ -401,18 +439,22 @@ export default function Discover() {
                 </section>
                 <div>
                   {replyTo!==null ? <div>replying to {replyTo}</div> : <></>}
-                  <div>
+                  <div className={Styles.sendCommentContainer}>
                     <TextField
                       id="standard-basic"
+                      sx={{
+                        width: "80%"
+                      }}
                       value={commentInput}
-                      // label={`Response ${index+1}`}
-                      variant="standard"
+                      variant="outlined"
                       name={`comment ${index}`}
-                      onChange={(e) => setCommentInput(e.target.value)}
+                      onChange={(e) => {setCommentInput(e.target.value)}}
                       className={Styles.commentInput}
                       error={commentInputError}
+                      placeholder="Comment"
+                      autoComplete="off"
                     />
-                    <button onClick={() => submitComment(index, replyTo)}>
+                    <button className={Styles.sendButton} onClick={() => {submitComment(index, replyTo)}}>
                       Send
                     </button>
                   </div>
