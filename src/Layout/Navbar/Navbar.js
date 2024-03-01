@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Logo from '../../Components/SVG/Logo'
 import { Link, NavLink, useMatch } from 'react-router-dom'
 import {motion} from 'framer-motion'
@@ -10,8 +10,12 @@ import Premium from '../../Components/SVG/NavBarIcons/Premium'
 import Notifications from '../../Components/SVG/NavBarIcons/Notifications'
 import More from '../../Components/SVG/NavBarIcons/More'
 import Profile from '../../Components/SVG/NavBarIcons/Profile'
+import { AuthContext } from '../../Context/AuthContext'
 
 export default function Navbar() {
+
+  const { signOut } = useContext(AuthContext);
+
 
   const moreRef = useRef(null);
   const moreButtonRef = useRef(null);
@@ -26,20 +30,6 @@ export default function Navbar() {
   const moreUlClassName = [ Styles.moreList, openMore ? Styles.listActive : ""].join(' ');
   const notificationsUlClassName = [ Styles.moreList, openNotifications ? Styles.listActive : ""].join(' ');
   const profileUlClassName = [ Styles.moreList, openProfile ? Styles.listActive : ""].join(' ');
-
-
- 
-
-  
- 
-
-  useEffect(()=>{
-    console.log("openMore: ", openNotifications)
-  },[openNotifications])
-
-  useEffect(()=>{
-    console.log("mounted")
-  },[])
 
   const handleClickOutside = (e) => {
     if (moreRef.current && !moreRef.current.contains(e.target) &&!moreButtonRef.current.contains(e.target)) {
@@ -59,6 +49,10 @@ export default function Navbar() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   },[]);
+
+  const handleSignOut = () =>{
+    signOut();
+  }
   
   return (
     <header className={Styles.header}>
@@ -116,7 +110,7 @@ export default function Navbar() {
             <motion.ul ref={profileRef} className={profileUlClassName} animate={openProfile ? {y:0, opacity:1} : {y:-10, opacity:0}}>
                 <li>Profile</li>
                 <li>My Activity</li>
-                <li>Sign Out</li>
+                <li onClick={handleSignOut}>Sign Out</li>
               </motion.ul>
           </li>
         </ul>

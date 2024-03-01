@@ -37,6 +37,10 @@ const PrivateRoute = ({ isAllowed, element }) => {
 
   if (user && !isAllowed) {
     return <Navigate to="/unauthorized" />;
+  } 
+  if(!user && !loading){
+    return <Navigate to="/sign-in" />;
+
   }
 
   return element;

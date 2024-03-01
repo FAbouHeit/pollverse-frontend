@@ -27,8 +27,8 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logOut = async () => {
-    await axiosInstance.post("user/logout");
+  const signOut = async () => {
+    await axiosInstance.get("user/sign-out");
     setUser(null);
     navigate('/')
   };
@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }) => {
         user,
         loading,
         setUser,
-        logOut,
+        signOut,
         fetchUserData,
       }}
     >
