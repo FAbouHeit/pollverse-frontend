@@ -9,8 +9,8 @@ import dateConverter from '../../Utils/DateConverter.js'
 import More from "../../Components/SVG/NavBarIcons/More";
 import MultiChoice from "../../Components/PollTypes/MultiChoice/MultiChoice";
 import Quiz from "../../Components/PollTypes/Quiz/Quiz";
-import Slider from "../../Components/PollTypes/Slider/Slider";
 import TwoChoice from "../../Components/PollTypes/TwoChoice/TwoChoice";
+import Sliders from "../../Components/PollTypes/Sliders/Sliders";
 
 export default function Discover() {
   const [posts, setPosts] = useState([]);
@@ -22,6 +22,7 @@ export default function Discover() {
   const [toggleCommentSection, setToggleCommentSection] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [openReport, setOpenReport] = useState(null);
+  const [commenterName ,setCommenterName] = useState("");
 
   const reportRef = useRef(null);
   const reportButtonRef = useRef(null);
@@ -197,19 +198,24 @@ export default function Discover() {
         userId: user._id,
         text: commentInput,
         type: "reply",
-        parentId: newPosts[postIndex]._id,
+        parentId: newPosts[postIndex].comments[commentIndex]._id,
         replies: [],
       };
       repliesArray.push(newReply);
       newPosts[postIndex].comments[commentIndex].replies = repliesArray;
       setPosts(newPosts);
       setCommentInput("");
-      await axiosInstance.post("/comment/create", {
-        userId: user._id,
-        text: commentInput,
-        type: "reply",
-        parentId: newPosts[postIndex].comments[commentIndex]._id,
-      });
+      try{
+
+        await axiosInstance.post("/comment/create", {
+          userId: user._id,
+          text: commentInput,
+          type: "reply",
+          parentId: newPosts[postIndex].comments[commentIndex]._id,
+        });
+      } catch (err) {
+        return;
+      }
       // console.log(newPosts[postIndex].comments)
       // console.log(newPosts[postIndex].comments[commentIndex])
       // console.log(newPosts[postIndex].comments[commentIndex].replies);
@@ -250,11 +256,11 @@ export default function Discover() {
       case "twoChoice": 
         return <TwoChoice options={options} responses={responses} postId={postId} posts={posts} setPosts={setPosts} postIndex={postIndex}/>;
       case "multiChoice": 
-      return <MultiChoice/>;
+      return <MultiChoice options={options} responses={responses} postId={postId} posts={posts} setPosts={setPosts} postIndex={postIndex}/>;
       case "quiz": 
-      return <Quiz/>;
+      return <Quiz options={options} responses={responses} postId={postId} posts={posts} setPosts={setPosts} postIndex={postIndex}/>;
       case "slider":
-        return <Slider/>;
+        return <Sliders options={options} responses={responses} postId={postId} posts={posts} setPosts={setPosts} postIndex={postIndex}/>;
       default:
         return; 
     }
@@ -404,7 +410,7 @@ export default function Discover() {
                           <span className={Styles.commentDate}>{dateConverter(posts[postIndex].comments[index].createdAt)}</span>
                         </div>
                           <p className={Styles.commentText}>{comment.text}</p>
-                        <button className={Styles.replyButton} onClick={() => {setReplyTo(index)}}>reply</button>
+                        <button className={Styles.replyButton} onClick={() => {setReplyTo(index); setCommenterName(posts[postIndex].comments[index].userId.firstName)}}>reply</button>
                         {comment.replies.length > 0 ? (
                           <button
                           className={Styles.viewButton}
@@ -423,7 +429,7 @@ export default function Discover() {
                               <div className={Styles.replyContainer}>
                                 <div style={{display:"flex", alignItems:"center", width: "100%", gap:"5px"}}>
                                   <img src={defaultUserImage} height={30} width={30} alt="userdefault"/>
-                                  <p><span style={{fontWeight: "bold"}}>{reply.userId.firstName +" "+ reply.userId.lastName}</span>  <span className={Styles.replySpan}> --replied</span></p>
+                                  <p><span style={{fontWeight: "bold"}}>{(reply.userId.firstName || user.firstName) +" "+ (reply.userId.lastName || user.lastName)}</span>  <span className={Styles.replySpan}> --replied</span></p>
                                 </div>
                               <p key={index} style={{margin: "1rem"}}>{reply.text}</p>
                               </div>
@@ -438,7 +444,7 @@ export default function Discover() {
                   })}
                 </section>
                 <div>
-                  {replyTo!==null ? <div>replying to {replyTo}</div> : <></>}
+                  {replyTo!==null ? <div>replying to {commenterName}</div> : <></>}
                   <div className={Styles.sendCommentContainer}>
                     <TextField
                       id="standard-basic"

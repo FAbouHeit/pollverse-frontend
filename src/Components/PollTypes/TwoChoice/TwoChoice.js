@@ -69,7 +69,11 @@ export default function TwoChoice({options, responses, postId, posts, setPosts, 
 
 
   const clearUserResponsesArray = async()=>{
-    await axiosInstance.post("/user/remove/responses", {userId: user._id}).then().catch(()=>{
+    await axiosInstance.post("/user/remove/responses", {userId: user._id})
+    .then(()=>{
+      console.log("deleted successfully")
+    })
+    .catch(()=>{
       console.log("errrror")
     })
   }
