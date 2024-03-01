@@ -245,10 +245,10 @@ export default function Discover() {
   }
 
 
-  const getPoll = (type, options, responses, postId)=> {
+  const getPoll = (type, options, responses, postId, postIndex)=> {
     switch (type){
       case "twoChoice": 
-        return <TwoChoice options={options} responses={responses} postId={postId}/>;
+        return <TwoChoice options={options} responses={responses} postId={postId} posts={posts} setPosts={setPosts} postIndex={postIndex}/>;
       case "multiChoice": 
       return <MultiChoice/>;
       case "quiz": 
@@ -349,7 +349,7 @@ export default function Discover() {
               </section>
 
               <div className={Styles.pollFigure}>
-                {getPoll(element.type, element.options, element.responses, element._id)}
+                {getPoll(element.type, element.options, element.responses, element._id, postIndex)}
               </div>
 
               <menu className={Styles.menuContainer}>

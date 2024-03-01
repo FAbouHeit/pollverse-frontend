@@ -85,7 +85,7 @@ export default function TwoChoice({options, responses, postId, posts, setPosts, 
 
           const calculatedWidth = `${(option.responses / pollResponses) * 100}%`;
           return (
-            <div key={index} className={`${Styles.optionDiv} ${user.respondedPosts.some((obj)=> obj.postId === postId) ? Styles.removeCursor : ""}`} onClick={(()=>handleAddResponse(index, option.responses))}>
+            <div key={index} className={Styles.optionDiv} onClick={(()=>handleAddResponse(index, option.responses))}>
               <>
               {user.respondedPosts.some((obj)=> obj.postId === postId) ? 
                 <motion.div  
