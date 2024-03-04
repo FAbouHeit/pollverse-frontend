@@ -1,0 +1,59 @@
+.chatContainer {
+    width: 100%;
+    margin: auto;
+    /* background: yellow; */
+    overflow-y: auto;
+    height: 75vh;
+  }
+  
+
+  .chatContainer * {
+    overflow-anchor: none;
+  }
+
+  .anchor {
+    overflow-anchor: auto;
+    height: 1px;
+  }
+  /* ... existing styles ... */
+  
+  .chatMessage {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 4px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.2em;
+  }
+  
+  .sent {
+    background: var(--lightblue); /* Light green background for sent messages */
+    text-align: left;
+    margin-left: 30%; /* Align to the right */
+  }
+  /* e8e5e5 */
+  .received {
+    background: #372d36; /* Light gray background for received messages */
+    text-align: left;
+    margin-right: 30%; /* Align to the left */
+  }
+
+  .chatMessageText{
+    margin-bottom: 10px;
+  }
+  .chatMessageTime{
+    color: #d5d5d5;
+    text-align: right;
+    font-size: 0.9em;
+  }
+
+  @media (max-width: 850px) {
+    .sent{
+      margin-left: 53%;
+    }
+    .received{
+      margin-right: 53%;
+    }
+  }
+  

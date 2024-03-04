@@ -38,4 +38,6 @@
 .rightAside {
     right: 0; /* Stick to the right */
     /* background-color: green; */
+    overflow-x: visible !important;
+    z-index: 15;
 }
