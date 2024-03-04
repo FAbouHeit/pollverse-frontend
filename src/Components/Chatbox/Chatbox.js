@@ -3,9 +3,9 @@ import Styles from './Chatbox.module.css';
 import ChatInput from '../ChatInput/ChatInput';
 import ChatWindow from '../ChatWindow/ChatWindow';
 
-export default function Chatbox({setOpenChat, name, sendMessage, messages}) {
+export default function Chatbox({handleOpenChat, openChat, name, sendMessage, messages}) {
     const handleCloseChat = ()=> {
-        setOpenChat(null);
+      handleOpenChat(openChat);
     }
   return (
     <section className={Styles.chatBoxContainer}>

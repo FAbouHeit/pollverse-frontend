@@ -8,6 +8,7 @@ export default function ChatWindow({messages}) {
     const { user } = useContext(AuthContext);
 
 
+
     useEffect(() => {
       setMyMessages(messages || []);
     }, [messages]);
@@ -16,7 +17,7 @@ export default function ChatWindow({messages}) {
     <div className={Styles.chatContainer}>
       {myMessages.map((msg, index) => {
         return( 
-        <div key={index} className={`${Styles.chatMessage} ${ msg.sender === user._id ? Styles.received : Styles.sent}`}>
+        <div key={index} className={`${Styles.chatMessage} ${ msg.senderId !== user._id ? Styles.received : Styles.sent}`}>
            <p className={Styles.chatMessageText}>{msg.text}</p>
           <span className={Styles.chatMessageTime}>{convertISOToDateTime(msg.createdAt)}</span>
         </div>
