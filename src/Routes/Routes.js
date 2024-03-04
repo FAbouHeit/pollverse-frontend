@@ -18,14 +18,46 @@ import Create from "../Pages/Create/Create.js";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../Context/AuthContext.js";
 
+// const PrivateRoute = ({ isAllowed, element }) => {
+//   const { user, loading, fetchUserData } = useContext(AuthContext);
+
+//   useEffect(() => {
+//     if (!user && !loading) {
+//       fetchUserData();
+//     }
+//   }, [user, loading, fetchUserData]);
+
+//   if (loading) {
+//     return (
+//       <div>
+//         Loading...
+//       </div>
+//     );
+//   }
+
+//   if (user && !isAllowed) {
+//     return <Navigate to="/unauthorized" />;
+//   } 
+//   if(!user && !loading){
+//     try{
+//       fetchUserData();
+//     } catch(err){
+//       return <Navigate to="/sign-in" />;
+//     }
+//     return <Navigate to="/sign-in" />;
+//   }
+
+//   return element;
+// };
+
 const PrivateRoute = ({ isAllowed, element }) => {
   const { user, loading, fetchUserData } = useContext(AuthContext);
 
-  // useEffect(() => {
-  //   if (!user) {
-  //     fetchUserData();
-  //   }
-  // }, [user, fetchUserData]);
+  useEffect(() => {
+    if (!user && !loading) {
+      fetchUserData();
+    }
+  }, [user, loading, fetchUserData]);
 
   if (loading) {
     return (
@@ -38,14 +70,13 @@ const PrivateRoute = ({ isAllowed, element }) => {
   if (user && !isAllowed) {
     return <Navigate to="/unauthorized" />;
   } 
-  if(!user && !loading){
-    return <Navigate to="/sign-in" />;
 
+  if (!user && !loading) {
+    return <Navigate to="/sign-in" />;
   }
 
   return element;
 };
-
 
 const AppRouter = () => {
   const { user } = useContext(AuthContext);

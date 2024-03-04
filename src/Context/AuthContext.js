@@ -6,7 +6,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,6 +14,12 @@ export const AuthProvider = ({ children }) => {
       fetchUserData();
     }
   }, [user]);
+
+  useEffect(() => {
+    if (!user || user === null) {
+      fetchUserData();
+    }
+  }, []);
 
   const fetchUserData = async () => {
     setLoading(true);
