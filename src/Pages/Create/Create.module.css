@@ -146,3 +146,10 @@ li.slider{
     bottom: 10%;
     right: 10%;
 }
+
+.loader{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

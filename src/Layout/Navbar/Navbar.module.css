@@ -1,5 +1,5 @@
 .header{
-    background-color: var(--whisper);
+    background-color: var(--white);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -9,6 +9,7 @@
     width: 56vw;
     z-index: 2;
     max-height: 70px;
+    padding-bottom: 10px;
 }
 
 .nav{
@@ -93,4 +94,9 @@
     background-color: var(--lightblue);
     color: white;
     /* border-radius: 7px; */
+}
+
+
+.moreList > li > a{
+    text-wrap: nowrap;
 }

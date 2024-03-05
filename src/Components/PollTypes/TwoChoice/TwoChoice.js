@@ -106,7 +106,7 @@ export default function TwoChoice({options, responses, postId, posts, setPosts, 
           )
         })}
       </div>
-      <button onClick={()=>clearUserResponsesArray()}>button</button>
+      {/* <button onClick={()=>clearUserResponsesArray()}>button</button> */}
       </>
     :
     <p>loading...</p>

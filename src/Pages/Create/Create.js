@@ -11,6 +11,8 @@ import QuizSection from '../../Components/QuizSection/QuizSection'
 import SliderSection from '../../Components/SliderSection/SliderSection'
 import { AuthContext } from '../../Context/AuthContext'
 import axiosInstance from '../../Utils/AxiosInstance'
+import { useNavigate } from 'react-router-dom'
+import { HashLoader } from 'react-spinners'
 
 export default function Create() {
   const [pollNumber, setPollNumber] = useState(1);
@@ -18,6 +20,7 @@ export default function Create() {
   const [isActiveMultiChoice, setIsActiveMultiChoice] = useState(false);
   const [isActiveQuiz, setIsActiveQuiz] = useState(false);
   const [isActiveSlider, setIsActiveSlider] = useState(false);
+  const [pageLoading,setPageLoading] = useState(false);
 
   const pageOptions = ["Public", "Private"]
   const limitOptions = ["24hr", "unlimited"]
@@ -34,6 +37,8 @@ export default function Create() {
 
   const { user, fetchUserData } = useContext(AuthContext);
   const userId = user ? user._id : null;
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!user) {
@@ -123,6 +128,7 @@ export default function Create() {
 
   const handlePostSubmit = async (options) =>{
       setInputValueProfanity(false);
+      
       if(!inputValue || inputValue === ""){
         return;
       }
@@ -133,6 +139,8 @@ export default function Create() {
           setInputValueProfanity(true);
           return;
       }
+
+      setPageLoading(true);
 
       let type = "";
 
@@ -153,6 +161,7 @@ export default function Create() {
           break;
       }
 
+
       await axiosInstance.post('/post/create', { 
         userId,
         caption: inputValue,
@@ -165,10 +174,14 @@ export default function Create() {
     } catch (err) {
       console.log("error: ", err);
     }
+    setPageLoading(false);
+    navigate('/discover');
   }
 
 
   return (
+    <>
+    {!pageLoading ?  
     <section className={Styles.createContainer}>
       <h1 className={Styles.createTitle}>Choose poll type</h1>
       <menu className={Styles.createMenu}>
@@ -253,5 +266,13 @@ export default function Create() {
     </section>
     
     </section>
+      :
+      <div style={{width: "100%", height:"100vh", position:"relative"}}>
+        <span className={Styles.loader}>
+          <HashLoader color="#0f0cc6" />
+        </span>
+      </div>
+    }
+    </>
   )
 }

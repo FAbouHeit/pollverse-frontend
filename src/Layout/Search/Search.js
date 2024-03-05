@@ -36,7 +36,7 @@ export default function Search() {
   const handleSearchInput = (e) => {
     setResultsArray([]);
     setLoading(true);
-    setSearchInput(e.target.value);
+    setSearchInput(e.target.value);<p>pageLoading</p>
     return debouncedHandleSearchInput(e.target.value);
   };
 

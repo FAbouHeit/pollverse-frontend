@@ -103,7 +103,7 @@ export default function Quiz({options, responses, postId, posts, setPosts, postI
           )
         })}
       </div>
-      <button onClick={()=>clearUserResponsesArray()}>button</button>
+      {/* <button onClick={()=>clearUserResponsesArray()}>button</button> */}
       </>
     :
     <p>loading...</p>

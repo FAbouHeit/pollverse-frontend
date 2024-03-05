@@ -1,0 +1,7 @@
+.twoChoiceSubmit{
+    cursor: pointer;
+}
+
+.twoChoiceSubmit:active{
+    opacity: 0.8;
+}

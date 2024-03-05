@@ -11,6 +11,7 @@ import MultiChoice from "../../Components/PollTypes/MultiChoice/MultiChoice";
 import Quiz from "../../Components/PollTypes/Quiz/Quiz";
 import TwoChoice from "../../Components/PollTypes/TwoChoice/TwoChoice";
 import Sliders from "../../Components/PollTypes/Sliders/Sliders";
+import { HashLoader } from "react-spinners";
 
 export default function Discover() {
   const [posts, setPosts] = useState([]);
@@ -36,7 +37,7 @@ export default function Discover() {
     try {
       const response = await axiosInstance.get("/post/");
       setPosts(response.data);
-      console.log(response.data);
+      // console.log(response.data);
       // console.log("post1 comments: ", response.data[0].comments);
     } catch (err) {
       console.log("error: ", err);
@@ -477,7 +478,11 @@ export default function Discover() {
 
     
       ) : pageLoading ? (
-        <p>pageLoading</p>
+        <div style={{width: "100%", height:"100vh", position:"relative"}}>
+        <span className={Styles.loader}>
+          <HashLoader color="#0f0cc6" />
+        </span>
+        </div>
       ) : (
         <p>No posts!</p>
       )}
