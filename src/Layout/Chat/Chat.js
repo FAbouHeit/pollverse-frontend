@@ -7,7 +7,7 @@ import Chatbox from '../../Components/Chatbox/Chatbox';
 import { HashLoader } from 'react-spinners';
 import io from 'socket.io-client';
 
-const socket = io(process.env.REACT_APP_BACKEND_SOCKET_PORT);
+const socket = io(process.env.REACT_APP_BACKEND_ENDPOINT);
 
 
 export default function Chat() {
