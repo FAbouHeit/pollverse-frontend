@@ -94,16 +94,6 @@ export default function Navbar() {
                 <li>Become a member</li>
               </motion.ul>
           </li>
-          <li ref={moreButtonRef} className={Styles.moreButton} onClick={()=>setOpenMore(prev => !prev)}>
-            <More active={openMore}/>
-            <motion.div animate={openMore ? {backgroundColor:"#373434", borderRadius: "5px", color:"white"}:""}>More&#9660;</motion.div>
-              <motion.ul ref={moreRef} className={moreUlClassName} animate={openMore ? {y:0, opacity:1} : {y:-10, opacity:0}}>
-                <li>Dark Mode</li>
-                <li>About Poliverse</li>
-                <li>Terms & Conditions</li>
-                <li>Settings</li>
-              </motion.ul>
-          </li>
           <li ref={profileButtonRef} className={Styles.moreButton} onClick={()=>setOpenProfile(prev => !prev)}>
             <Profile active={openProfile}/>
             <motion.div animate={openProfile ? {color:"#0f0cc6"}:""}>Profile&#9660;</motion.div>
@@ -113,6 +103,17 @@ export default function Navbar() {
                 <li onClick={handleSignOut}>Sign Out</li>
               </motion.ul>
           </li>
+          <li ref={moreButtonRef} className={Styles.moreButton} onClick={()=>setOpenMore(prev => !prev)}>
+            <More active={openMore}/>
+            <motion.div animate={openMore ? { borderRadius: "5px"}:""}>More&#9660;</motion.div>
+              <motion.ul ref={moreRef} className={moreUlClassName} animate={openMore ? {y:0, opacity:1} : {y:-10, opacity:0}}>
+                <li>Dark Mode</li>
+                <li>About Poliverse</li>
+                <li>Terms & Conditions</li>
+                <li>Settings</li>
+              </motion.ul>
+          </li>
+          
         </ul>
       </nav>
     </header>

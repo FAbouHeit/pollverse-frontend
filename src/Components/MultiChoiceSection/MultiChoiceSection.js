@@ -85,13 +85,13 @@ export default function MultiChoiceSection({pollNumber, handlePostSubmit}) {
                 className={Styles.MultiChoiceOption}
                 error = {errorChoice === index}
             />
-            <button onClick={(e) => handleDeleteOption(index,e)} disabled={numberOfOptions <= 3}>Delete</button>
+            <button onClick={(e) => handleDeleteOption(index,e)} disabled={numberOfOptions <= 3} className={Styles.extraButton}>Delete</button>
             </div>
             )
         })}
 
         { numberOfOptions < 10 &&
-            <button onClick={handleAddOption}>Add</button>
+            <button onClick={handleAddOption} className={Styles.addButton}>Add</button>
         }
 
         <button onClick={handleMultiChoiceSubmit}  className={Styles.twoChoiceSubmit}>Create</button>

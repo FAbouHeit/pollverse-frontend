@@ -1,7 +1,7 @@
 .onePost{
     background-color: var(--white);
     width: 90%;
-    margin: 0 auto 50px auto;
+    margin: 10px auto 50px auto;
     border-radius: 10px;
     min-height: 500px;
     transition: all 0.2s ease-in;
@@ -242,4 +242,63 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.shareModal{
+    position: absolute;
+    height: 300px;
+    width: 600px;
+    background-color: white;
+    left: 50vw;
+    transform: translateY(-50%) translateX(-50%);
+    z-index: 150;
+    border-radius: 7px;
+    display: flex;
+    padding: 20px 40px;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.modalButtonsContainer{
+    /* background-color: var(--lightgray); */
+    height: 30%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.shareModal > div> p{
+    font-size: 1.3rem;
+}
+
+.modalButtonsContainer > button{
+    background-color: var(--white);
+    /* color: white; */
+    border: none;
+    width: 30%;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid var(--lightblue)
+}   
+
+.modalButtonsContainer > button:active{
+    opacity: 0.8;
+}
+
+.modalTop{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modalClose{
+    background-color: var(--lightblue);
+    border-radius: 7px;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+.modalClose:active{
+    opacity: 0.8;
 }

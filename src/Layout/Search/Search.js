@@ -105,6 +105,7 @@ export default function Search() {
 
   return (
     <aside className={Styles.searchContainer}>
+      <p className={Styles.searchTitle}>Search</p>
       <TextField
         fullWidth
         variant="outlined"
@@ -135,17 +136,17 @@ export default function Search() {
                 </div>
                 <div  className={Styles.searchButtons}>
                   { user.community.some((obj) => obj.friendId === item._id) ? 
-                  <span>friend</span> 
+                  <span className={Styles.who}>friend</span> 
                   : user.friendReqSent.includes(item._id) ?
-                    <button onClick={() =>handleCancelFriendReq(item._id)}> Cancel friend request</button>
+                    <button className={Styles.buttons} onClick={() =>handleCancelFriendReq(item._id)}> Cancel friend request</button>
                     : user.friendReqReceived.includes(item._id) ?
                       <>
-                        <button onClick={()=>handleAcceptFriend(item._id)}>yes</button>
-                        <button onClick={()=> handleDeclineFriendRequest(item._id)}>no</button>
+                        <button className={Styles.buttons} onClick={()=>handleAcceptFriend(item._id)}>yes</button>
+                        <button className={Styles.buttons} onClick={()=> handleDeclineFriendRequest(item._id)}>no</button>
                       </>
                       : user._id !== item._id && !user.friendReqSent.includes(item._id)?
-                        <button onClick={()=> handleAddfriend(item._id)}>Add</button>
-                        : <span>you</span>
+                        <button className={Styles.buttons} onClick={()=> handleAddfriend(item._id)}>Add</button>
+                        : <span className={Styles.who}>you</span>
                   }
                 </div>
               </li>

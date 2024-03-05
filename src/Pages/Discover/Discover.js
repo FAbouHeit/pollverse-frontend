@@ -294,22 +294,20 @@ export default function Discover() {
 {
   openModal &&
   <motion.div
-  // variants={containerVariants}
-  // initial="hidden"
-  // animate="visible"
   style={{
-      position: "absolute",
-      height: "300px",
-      width: "300px",
-      backgroundColor: "red",
-      left: "50vw",
-      top: `calc(50vh + ${window.scrollY}px)`,
-      transform: "translateY(-50%) translateX(-50%)",
-      zIndex: 100
+    top: `calc(50vh + ${window.scrollY}px)`,
     }}
+    className={Styles.shareModal}
     onClick={(e) => e.stopPropagation()}
   >
-    words are cool
+    <div className={Styles.modalTop}>
+    <p>Share</p>
+    <p className={Styles.modalClose} onClick={()=>setOpenModal(false)}>X</p>
+    </div>
+    <div className={Styles.modalButtonsContainer}>
+      <button>Copy Link</button>
+      <button>My Wall</button>
+    </div>
   </motion.div>
 }
 <>

@@ -140,6 +140,7 @@ useEffect(() => {
     <aside className={Styles.asideContainer}>
       {friends.length > 0 && openChat==null ?
         <>
+        <p className={Styles.myCommunity}>My Community</p>
         {friends.map((friend, index) => {
           return (
             <div key={index} className={Styles.friendContainer} onClick={()=>handleOpenChat(index, friend.firstName, friend._id)}>

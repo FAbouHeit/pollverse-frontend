@@ -2,9 +2,31 @@
     /* height: 300px; */
     width: 100%;
     /* background-color: blue; */
-    border: 1px solid blue;
+    /* border: 1px solid blue; */
 }
 
 .chatWindow{
     height: 500px;
+}
+
+.chatTop{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5%;
+    margin-bottom: 20px;
+    background-color: var(--darkblue);
+    color: white;
+    border-radius: 5px;
+    align-items: center;
+}
+
+.chatTop > button {
+    background-color: var(--darkgray);
+    font-size: 0.9rem;
+    height: 40px;
+    width: 60px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
 }

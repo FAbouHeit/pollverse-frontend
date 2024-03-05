@@ -24,20 +24,17 @@
     width: 20%; /* 25% width for each aside */
     max-width: 20%;
     position: fixed; /* Fixed positioning */
-    /* top: 80px; */
-    top: 80px;
+    top: 60px;
     bottom: 0;
-    background-color: var(--white);
+    padding-top: 20px;
 }
 
 .leftAside {
     left: 0; /* Stick to the left */
-    /* background-color: blue; */
 }
 
 .rightAside {
     right: 0; /* Stick to the right */
-    /* background-color: green; */
     overflow-x: visible !important;
     z-index: 15;
 }

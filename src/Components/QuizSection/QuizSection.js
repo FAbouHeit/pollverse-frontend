@@ -72,6 +72,7 @@ export default function QuizSection({ pollNumber, handlePostSubmit }) {
                 return (
                     <div key={index}>
                         <TextField
+                        fullWidth
                             id={`option-${index}`}
                             value={element.name}
                             label={`Option ${index + 1}`}

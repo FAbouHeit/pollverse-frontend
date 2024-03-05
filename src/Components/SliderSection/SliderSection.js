@@ -80,7 +80,7 @@ export default function SliderSection({pollNumber, handlePostSubmit}) {
 
   return (
     <>
-    <form onSubmit={handleQuizSubmit}>
+    <form onSubmit={handleQuizSubmit} className={Styles.twoChoiceForm}>
         <div>
             <TextField 
             id="standard-basic" 
@@ -91,6 +91,7 @@ export default function SliderSection({pollNumber, handlePostSubmit}) {
             name='option 1'
             className={Styles.twoChoiceOption1}
             error = {errorChoice === 0}
+            fullWidth
             />
             <TextField
             id="outlined-number"
@@ -102,6 +103,7 @@ export default function SliderSection({pollNumber, handlePostSubmit}) {
                 shrink: true,
             }}
             onChange={(e)=>handleNumberChange(0, e)}
+            
             />
         </div>
         <div>
@@ -114,6 +116,7 @@ export default function SliderSection({pollNumber, handlePostSubmit}) {
             name='option2'
             className={Styles.twoChoiceOption2}
             error = {errorChoice === 1}
+            fullWidth
             />
             <TextField
             id="outlined-number"
@@ -126,9 +129,10 @@ export default function SliderSection({pollNumber, handlePostSubmit}) {
             }}
             onChange={(e)=>handleNumberChange(1, e)}
             error={numberError}
+            
             />
         </div>
-        <button onClick={handleQuizSubmit}>Create</button>
+        <button onClick={handleQuizSubmit} className={Styles.addButton}>Create</button>
     </form>
     <section>
         <h3>Preview</h3>

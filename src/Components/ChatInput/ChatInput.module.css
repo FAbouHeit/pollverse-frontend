@@ -4,7 +4,7 @@
     width: 100%;
     align-self: center;
     background-color: #adadad59;
-    border-top: 2px solid rgba(216, 26, 132, 0.2);
+    /* border-top: 2px solid rgba(216, 26, 132, 0.2); */
   }
   
   .inputField {
@@ -21,7 +21,7 @@
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
-    background-color: #D81A84;
+    background-color: var(--darkblue);
     color: white;
     cursor: pointer;
     margin-left: 5%;

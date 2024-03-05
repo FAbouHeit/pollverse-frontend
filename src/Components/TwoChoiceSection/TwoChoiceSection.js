@@ -48,7 +48,7 @@ export default function TwoChoiceSection({pollNumber, handlePostSubmit}) {
     <form onSubmit={handleTwoChoiceSubmit} className={Styles.twoChoiceForm}>
         {optionsArray.map((element, index)=>{
             return (
-                <div key={index}>
+                <div key={index} style={{width:"100%"}}>
                 <TextField 
                 id="standard-basic" 
                 key={index}
@@ -59,6 +59,7 @@ export default function TwoChoiceSection({pollNumber, handlePostSubmit}) {
                 onChange={(e)=> handleOptionChange(index, e)}
                 className={Styles.MultiChoiceOption}
                 error = {errorChoice === index}
+                fullWidth
             />
             </div>
             )
